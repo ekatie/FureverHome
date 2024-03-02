@@ -1,38 +1,19 @@
-import './App.scss';
+import './app.scss';
 import React from 'react';
-import { BrowserRouter, Routes, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import NavigationBar from './components/NavigationBar/NavigationBar';
-import HomePage from './components/HomePage/HomePage';
-import About from './components/About/About';
-import AdminDashboard from './components/AdminDashboard/AdminDashboard';
-import ApplicationForm from './components/ApplicationForm/ApplicationForm';
-import DogDetails from './components/DogDetails/DogDetails';
-import DogList from './components/DogList/DogList';
 import Footer from './components/Footer/Footer';
-import Login from './components/Login/Login';
-import Register from './components/Register/Register';
-import UserProfile from './components/UserProfile/UserProfile';
-
+import RoutesComponent from './routes';
 
 function App() {
   return (
-    <BrowserRouter>
-      <NavigationBar />
-      <Routes>
-        <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route path="/about" component={About} />
-          <Route path="/dashboard" component={AdminDashboard} />
-          <Route path="/application" component={ApplicationForm} />
-          <Route path="/dogs" component={DogList} />
-          <Route path="/dogs/:id" component={DogDetails} />
-          <Route path="/login" component={Login} />
-          <Route path="/register" component={Register} />
-          <Route path="/users/:id" component={UserProfile} />
-        </Switch>
-      </Routes>
-      <Footer />
-    </BrowserRouter>
+    <div className="App">
+      <Router>
+        <NavigationBar />
+        <RoutesComponent />
+        <Footer />
+      </Router>
+    </div>
   );
 }
 
@@ -90,5 +71,5 @@ o	GET - /Dogs/favourites
 	View logged in user’s favourite dogs
 o	GET - /Dogs/:id
 	View a specific dog’s details
-o	POST - /Dogs/:id/favorite
-	Toggle the favorite status of a dog for the logged-in user, combining the creation and deletion of favorites into one action based on current state. */}
+o	POST - /Dogs/:id/favourite
+	Toggle the favourite status of a dog for the logged-in user, combining the creation and deletion of favourites into one action based on current state. */}
