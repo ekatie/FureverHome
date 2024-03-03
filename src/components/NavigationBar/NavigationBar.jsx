@@ -1,12 +1,7 @@
-import React from "react";
 import "./NavigationBar.scss";
 
 function NavigationBar() {
-  return (
-    <div>
-      <h1>Navigation Bar</h1>
-    </div>
-  );
+  return <nav className="navbar">Furever Home</nav>;
 }
 
 export default NavigationBar;
