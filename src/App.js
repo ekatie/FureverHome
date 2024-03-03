@@ -1,6 +1,5 @@
 import './app.scss';
 import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
 import NavigationBar from './components/NavigationBar/NavigationBar';
 import Footer from './components/Footer/Footer';
 import RoutesComponent from './routes';
@@ -8,11 +7,9 @@ import RoutesComponent from './routes';
 function App() {
   return (
     <div className="App">
-      <Router>
         <NavigationBar />
         <RoutesComponent />
         <Footer />
-      </Router>
     </div>
   );
 }
