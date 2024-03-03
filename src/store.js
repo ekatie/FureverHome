@@ -1,10 +1,16 @@
-import { configureStore } from '@reduxjs/toolkit';
-import userReducer from './features/userSlice';
-import dogsReducer from './features/dogSlice';
+import { configureStore } from "@reduxjs/toolkit";
+import dogsReducer from "./features/dogSlice";
+import userReducer from "./features/userSlice";
+import applicationReducer from "./features/applicationSlice";
+import authReducer from "./features/authSlice";
 
-export const store = configureStore({
+const store = configureStore({
   reducer: {
-    user: userReducer,
     dogs: dogsReducer,
+    user: userReducer,
+    application: applicationReducer,
+    auth: authReducer,
   },
 });
+
+export default store;
