@@ -13,15 +13,15 @@ import UserProfile from './components/UserProfile/UserProfile';
 const RoutesComponent = () => {
   return (
     <Routes>
-      <Route exact path="/" component={<Home />} />
-      <Route path="/about" component={<About />} />
-      <Route path="/dashboard" component={<AdminDashboard />} />
-      <Route path="/application" component={<ApplicationForm />} />
-      <Route path="/dogs" component={<DogList />} />
-      <Route path="/dogs/:id" component={<DogDetails />} />
-      <Route path="/login" component={<Login />} />
-      <Route path="/register" component={<Register />} />
-      <Route path="/users/:id" component={<UserProfile />} />
+      <Route exact path="/" element={<Home />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/dashboard" element={<AdminDashboard />} />
+      <Route path="/application" element={<ApplicationForm />} />
+      <Route path="/dogs/:id" element={<DogDetails />} />
+      <Route path="/dogs" element={<DogList />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/users/:id" element={<UserProfile />} />
     </Routes>
   );
 };
