@@ -1,10 +1,19 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { getDogs } from "../services/dogsService";
+
+export const fetchDogsAsync = createAsyncThunk(
+  "dogs/fetchDogs",
+  async () => {
+    const response = await getDogs();
+    return response;
+  }
+);
 
 const dogSlice = createSlice({
   name: "dogs",
   initialState: {
-    dog: {},
     dogs: [],
+    status: "idle",
   },
   reducers: {
     fetchDogs(state, action) {
@@ -26,6 +35,20 @@ const dogSlice = createSlice({
       state.dogs = action.payload;
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchDogsAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchDogsAsync.fulfilled, (state, action) => {
+        state.dogs = action.payload;
+        state.status = "succeeded";
+      })
+      .addCase(fetchDogsAsync.rejected, (state) => {
+        state.status = "failed";
+      },
+      );
+  }
 });
 
 export const { fetchDogs, addDog, updateDog, fetchDog, toggleFavourite, fetchFavourites } = dogSlice.actions;
