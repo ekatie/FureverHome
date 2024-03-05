@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchDogsAsync } from "../../features/dogSlice";
 import { Link } from "react-router-dom";
 import DogImage from "../DogImage/DogImage";
+import "./DogList.scss";
 
 const DogsList = () => {
   const dispatch = useDispatch();
@@ -22,15 +23,22 @@ const DogsList = () => {
 
   return (
     <div>
-      {dogs.map((dog) => (
-        <Link to={`/dogs/${dog.id}`}>
-          <DogImage
-            key={dog.id}
-            name={dog.name}
-            imageUrl={dog.defaultImageUrl}
-          />
-        </Link>
-      ))}
+      {/* filter dogs by size, age */}
+      <h1 className="page-title">Available Dogs</h1>
+      <section className="dog-list">
+        {dogs.map((dog) => (
+          <article className="dog-list-item">
+            <Link to={`/dogs/${dog.id}`} className="dog-link">
+              {dog.name}
+            </Link>
+            <DogImage
+              key={dog.id}
+              name={dog.name}
+              imageUrl={dog.default_image_url}
+            />
+          </article>
+        ))}
+      </section>
     </div>
   );
 };
