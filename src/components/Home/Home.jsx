@@ -1,12 +1,17 @@
 import React from "react";
 import DogList from "../DogList/DogList";
+import { Link } from "react-router-dom";
+import "./Home.scss";
 
 function Home() {
   return (
-    <div>
-      <h1>Welcome to Furever Home</h1>
+    <section className="home-page">
+      <h1 className="page-title">Welcome to Furever Home</h1>
       <DogList />
-    </div>
+      <Link to="/dogs" className="lower-nav-link">
+        View all dogs
+      </Link>
+    </section>
   );
 }
 
