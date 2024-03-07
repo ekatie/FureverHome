@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import DogImage from "../DogImage/DogImage";
 import "./DogList.scss";
 
-const DogsList = () => {
+const DogList = () => {
   const dispatch = useDispatch();
   const dogs = useSelector((state) => state.dogs.dogs);
   const status = useSelector((state) => state.dogs.status);
@@ -27,7 +27,7 @@ const DogsList = () => {
       <h1 className="page-title">Available Dogs</h1>
       <section className="dog-list">
         {dogs.map((dog) => (
-          <article className="dog-list-item">
+          <article key={dog.id} className="dog-list-item">
             <Link to={`/dogs/${dog.id}`} className="dog-link">
               {dog.name}
             </Link>
@@ -43,4 +43,4 @@ const DogsList = () => {
   );
 };
 
-export default DogsList;
+export default DogList;
