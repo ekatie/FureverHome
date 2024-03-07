@@ -1,22 +1,36 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const initialState = {
+  application: {},
+};
+
 const applicationSlice = createSlice({
   name: "application",
-  initialState: {
-    application: {},
-  },
+  initialState,
   reducers: {
     fetchApplication(state, action) {
-      state.application = action.payload;
+      return {
+        ...state,
+        application: action.payload
+      };
     },
     addApplication(state, action) {
-      state.application = action.payload;
+      return {
+        ...state,
+        application: action.payload
+      };
     },
     updateApplication(state, action) {
-      state.application = action.payload;
+      return {
+        ...state,
+        application: action.payload
+      };
     },
     cancelApplication(state, action) {
-      state.application = action.payload;
+      return {
+        ...state,
+        application: action.payload
+      };
     }
   },
 });
