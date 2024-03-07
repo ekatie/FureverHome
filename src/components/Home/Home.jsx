@@ -6,7 +6,9 @@ import "./Home.scss";
 function Home() {
   return (
     <section className="home-page">
-      <h1 className="page-title">Welcome to Furever Home</h1>
+      <div className="hero-section">
+        <h1 className="page-title">Welcome to Furever Home</h1>
+      </div>
       <DogList />
       <Link to="/dogs" className="lower-nav-link">
         View all dogs
