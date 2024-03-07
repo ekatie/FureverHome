@@ -2,15 +2,30 @@ import React, { useState } from "react";
 import "./NavigationBar.scss";
 import logo from "../../assets/furever-home-logo.png";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import { logout } from "../../features/authSlice";
+import { useNavigate } from "react-router-dom";
 
 function NavigationBar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const user = useSelector((state) => state.auth.user);
+  console.log("user", user);
+
+  const state = useSelector((state) => state);
+  console.log("Redux store state:", state);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
+    setIsDropdownOpen(false);
+    navigate("/");
   };
 
   return (
@@ -20,24 +35,24 @@ function NavigationBar() {
         <p className="logo-text">Furever Home</p>
       </div>
       <div className="nav-links">
-        <a href="/" className="nav-link">
+        <Link to="/" className="nav-link">
           Home
-        </a>
-        <a href="/dogs" className="nav-link">
+        </Link>
+        <Link to="/dogs" className="nav-link">
           Dogs
-        </a>
-        <a href="/about" className="nav-link">
+        </Link>
+        <Link to="/about" className="nav-link">
           About
-        </a>
+        </Link>
       </div>
       {!user ? (
         <div className="nav-buttons">
-          <a href="/login" className="nav-button">
+          <Link to="/login" className="nav-button">
             Log In
-          </a>
-          <a href="/signup" className="nav-button">
+          </Link>
+          <Link to="/register" className="nav-button">
             Sign Up
-          </a>
+          </Link>
         </div>
       ) : (
         <div className="nav-buttons">
@@ -49,15 +64,27 @@ function NavigationBar() {
           />
           {isDropdownOpen && (
             <div className="dropdown-menu">
-              <a href="/profile" className="dropdown-link">
+              <Link
+                to="/profile"
+                className="dropdown-link"
+                onClick={toggleDropdown}
+              >
                 Profile
-              </a>
-              <a href="/application" className="dropdown-link">
+              </Link>
+              <Link
+                to="/application"
+                className="dropdown-link"
+                onClick={toggleDropdown}
+              >
                 Application
-              </a>
-              <a href="/logout" className="dropdown-link">
+              </Link>
+              <Link
+                to="/logout"
+                className="dropdown-link"
+                onClick={handleLogout}
+              >
                 Logout
-              </a>
+              </Link>
             </div>
           )}
         </div>
