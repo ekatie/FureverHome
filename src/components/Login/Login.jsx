@@ -11,16 +11,17 @@ function Login() {
   const navigate = useNavigate();
 
   const handleSubmit = async (email, password) => {
-    console.log("Login form submitted:", email, password);
     try {
       const response = await API.post("/login", { email, password });
-      console.log("Login response:", response);
       const { user, token } = response.data;
 
-      // localStorage.setItem("authTokens", JSON.stringify(headers));
-      // dispatch(login({ user: userData, token: headers["access-token"] }));
+      // Store the token and user data in local storage
+      localStorage.setItem("authTokens", JSON.stringify({ token }));
+      localStorage.setItem("userData", JSON.stringify(user));
+
+      // Dispatch the login action
       dispatch(login({ user, token }));
-      // setAuthToken(headers["access-token"]);
+      setAuthToken(token);
 
       navigate("/");
     } catch (error) {
