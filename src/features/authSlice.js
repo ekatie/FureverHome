@@ -5,23 +5,33 @@ const initialState = {
   token: null
 };
 
-// login, logout and register are all actions, api calls are thunks
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
     login(state, action) {
-      state.user = action.payload.user;
-      state.token = action.payload.token;
+      console.log("login action:", action.payload);
+      const { user, token } = action.payload;
+      return {
+        ...state,
+        user,
+        token
+      };
     },
     logout(state) {
-      state.user = null;
-      state.token = null;
-      localStorage.removeItem('jwt');
+      return {
+        ...state,
+        user: null,
+        token: null
+      };
     },
     register(state, action) {
-      state.user = action.payload.user;
-      state.token = action.payload.token;
+      const { user, token } = action.payload;
+      return {
+        ...state,
+        user,
+        token
+      };
     },
   },
 });
