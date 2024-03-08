@@ -20,16 +20,22 @@ const dogSlice = createSlice({
       state.dogs = action.payload;
     },
     addDog(state, action) {
-      state.dogs = action.payload;
+      state.dogs.push(action.payload);
     },
     updateDog(state, action) {
-      state.dogs = action.payload;
+      const { id, updatedDog } = action.payload;
+      state.dogs = state.dogs.map(dog =>
+        dog.id === id ? updatedDog : dog
+      );
     },
     fetchDog(state, action) {
       state.dog = action.payload;
     },
     toggleFavourite(state, action) {
-      state.dog = action.payload;
+      const { id, isFavourite } = action.payload;
+      state.dogs = state.dogs.map(dog =>
+        dog.id === id ? { ...dog, isFavourite } : dog
+      );
     },
     fetchFavourites(state, action) {
       state.dogs = action.payload;
@@ -46,10 +52,10 @@ const dogSlice = createSlice({
       })
       .addCase(fetchDogsAsync.rejected, (state) => {
         state.status = "failed";
-      },
-      );
+      });
   }
 });
+
 
 export const { fetchDogs, addDog, updateDog, fetchDog, toggleFavourite, fetchFavourites } = dogSlice.actions;
 export default dogSlice.reducer;
