@@ -21,7 +21,7 @@ const RoutesComponent = () => {
       <Route path="/dogs" element={<DogList />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/users/:id" element={<UserProfile />} />
+      <Route path="/profile" element={<UserProfile />} />
     </Routes>
   );
 };
