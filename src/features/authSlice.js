@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import setAuthToken from "../services/api";
 
 const initialState = {
   user: null,
@@ -10,31 +11,28 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     login(state, action) {
-      console.log("login action:", action.payload);
       const { user, token } = action.payload;
-      return {
-        ...state,
-        user,
-        token
-      };
+      state.user = user;
+      state.token = token;
     },
     logout(state) {
-      return {
-        ...state,
-        user: null,
-        token: null
-      };
+      state.user = null;
+      state.token = null;
     },
     register(state, action) {
       const { user, token } = action.payload;
-      return {
-        ...state,
-        user,
-        token
-      };
+      state.user = user;
+      state.token = token;
     },
   },
 });
+
+export const logoutUser = () => (dispatch) => {
+  localStorage.removeItem("authTokens");
+  localStorage.removeItem("userData");
+  setAuthToken(null);
+  dispatch(logout());
+};
 
 export const { login, logout, register } = authSlice.actions;
 export default authSlice.reducer;
