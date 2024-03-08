@@ -4,6 +4,9 @@ import API, { setAuthToken } from "../../services/api";
 import { useNavigate } from "react-router-dom";
 import { register } from "../../features/authSlice";
 
+// Update to only require email and password for registration
+// User name, phone, and date of birth can be updated in the user profile
+
 function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
