@@ -1,0 +1,46 @@
+.dog-list-item {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  justify-content: flex-start;
+  align-items: center;
+  overflow: hidden;
+  height: auto;
+  width: calc(33.333% - 20px);
+  max-width: 90%;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  position: relative;
+  margin-bottom: 15px;
+
+  .dog-link {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    font-size: 1.2em;
+    margin: 15px 0 5px 0;
+    text-align: center;
+    transition: transform 0.2s;
+
+    &:hover {
+      color: #f0a500;
+      transform: scale(1.2);
+    }
+  }
+
+  .dog-image-container {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex; 
+    justify-content: center;
+    align-items: center; 
+  
+    .dog-image {
+      width: calc(100% - 20px);
+      height: calc(100% - 20px);
+      object-fit: cover;
+      object-position: center;
+      border-radius: 10px;
+    }
+  }
+}
