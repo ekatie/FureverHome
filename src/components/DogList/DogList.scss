@@ -5,32 +5,7 @@
   margin: 0 auto;
   width: 90%;
   gap: 10px;
-
-  .dog-list-item {
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
-    padding: 10px;
-    justify-content: space-between;
-    align-items: center;
-    overflow: hidden;
-    height: 350px;
-    width: calc(25% - 20px)
-  }
-
-  .dog-link{
-    text-decoration: none;
-    color: black;
-    font-weight: bold;
-    font-size: 1.2em;
-    min-height: 40px;
-    transition: transform 0.2s;
-
-    &:hover {
-      color: #f0a500;
-      transform: scale(1.2);
-    }
-  }
+}
 
 /* Media query for smaller screens */
   @media (max-width: 1200px) {
@@ -50,4 +25,3 @@
       width: calc(100% - 20px); /* 1 item per row */
     }
   }
-}
