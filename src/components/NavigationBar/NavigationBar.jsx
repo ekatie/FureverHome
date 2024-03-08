@@ -4,7 +4,7 @@ import logo from "../../assets/furever-home-logo.png";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { logout } from "../../features/authSlice";
+import { logoutUser } from "../../features/authSlice";
 import { useNavigate } from "react-router-dom";
 
 function NavigationBar() {
@@ -13,17 +13,15 @@ function NavigationBar() {
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.auth.user);
-  console.log("user", user);
 
   const state = useSelector((state) => state);
-  console.log("Redux store state:", state);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
   const handleLogout = () => {
-    dispatch(logout());
+    dispatch(logoutUser());
     setIsDropdownOpen(false);
     navigate("/");
   };
