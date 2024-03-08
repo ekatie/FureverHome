@@ -4,12 +4,19 @@ import { updateUser } from "../../features/userSlice";
 import { useEffect, useState } from "react";
 import API from "../../services/api";
 
+// User to view form when profile incomplete or when user clicks "Edit"
+// User to view "Save Changes" button when in edit mode
+// User to view "Edit" button when not in edit mode
+// User to view "Please complete your profile" message when profile incomplete
+// User to view form fields disabled when not in edit mode
+// User to view form fields enabled when in edit mode
+// User to view form fields pre-populated with user data
+
 function UserProfile() {
   const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
 
   const state = useSelector((state) => state);
-  console.log(state);
 
   useEffect(() => {
     setFormData({
