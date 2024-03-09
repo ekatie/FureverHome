@@ -9,28 +9,16 @@ const applicationSlice = createSlice({
   initialState,
   reducers: {
     fetchApplication(state, action) {
-      return {
-        ...state,
-        application: action.payload
-      };
+      state.application = action.payload;
     },
     addApplication(state, action) {
-      return {
-        ...state,
-        application: action.payload
-      };
+      state.application = action.payload;
     },
     updateApplication(state, action) {
-      return {
-        ...state,
-        application: action.payload
-      };
+      state.application = action.payload;
     },
     cancelApplication(state, action) {
-      return {
-        ...state,
-        application: action.payload
-      };
+      state.application = action.payload;
     }
   },
 });
