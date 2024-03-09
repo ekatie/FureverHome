@@ -1,0 +1,42 @@
+.footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 50px;
+  padding: 10px 15px;
+  border-top: 2px solid #f0a500;
+  margin-top: 15px;
+
+  p {
+    font-family: "Ink Free", cursive;
+    font-size: 1.3em;
+    font-weight: 600;
+  }
+  .social-media {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+
+    .social-link {
+    color: #000;
+    font-size: 1.5em;
+    transition: transform 0.2s;
+
+    &:hover {
+      color: #f0a500;
+      transform: scale(1.2);
+    }
+    }
+  }
+  .email-link {
+    color: #000;
+    font-size: 1em; /* Adjust to match your design */
+    transition: transform 0.2s ease;
+  
+    &:hover {
+      color: #f0a500;
+      transform: scale(1.1);
+    }
+  }
+}
