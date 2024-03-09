@@ -29,7 +29,7 @@ const FavButton = ({ selected, dogId }) => {
   };
 
   return (
-    <div className="fav-button" onClick={handleToggleFavourite}>
+    <div className="fav-button" onClick={() => handleToggleFavourite()}>
       <FavIcon selected={selected} />
     </div>
   );
