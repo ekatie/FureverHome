@@ -1,11 +1,20 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getDogs } from "../services/dogsService";
+import API from "../services/api";
 
 export const fetchDogsAsync = createAsyncThunk(
   "dogs/fetchDogs",
   async () => {
     const response = await getDogs();
     return response;
+  }
+);
+
+export const toggleFavouriteAsync = createAsyncThunk(
+  'dogs/toggleFavorite',
+  async ({ dogId, userId }, { getState }) => {
+    const response = await API.post(`/dogs/${dogId}/favourite`);
+    return response.data;
   }
 );
 
@@ -53,6 +62,13 @@ const dogSlice = createSlice({
       .addCase(fetchDogsAsync.rejected, (state) => {
         state.status = "failed";
       });
+    builder.addCase(toggleFavouriteAsync.fulfilled, (state, action) => {
+      const { dog_id } = action.payload;
+      const dogIndex = state.dogs.findIndex(dog => dog.id === dog_id);
+      if (dogIndex !== -1) {
+        state.dogs[dogIndex].isFavourite = !state.dogs[dogIndex].isFavourite;
+      }
+    });
   }
 });
 
