@@ -3,6 +3,8 @@ import { useDispatch } from "react-redux";
 import API, { setAuthToken } from "../../services/api";
 import { useNavigate } from "react-router-dom";
 import { register } from "../../features/authSlice";
+import { Link } from "react-router-dom";
+import "./../Login/Login.scss";
 
 // Update to only require email and password for registration
 // User name, phone, and date of birth can be updated in the user profile
@@ -113,23 +115,35 @@ function Register() {
   };
 
   return (
-    <div>
-      <h1 className="page-title">Register</h1>
+    <section className="form">
+      <h1 className="page-title">Create an Account</h1>
+      <h2>Fill out your information below to register.</h2>
       <form onSubmit={handleSubmit}>
+        <label>Name</label>
         <input
           type="text"
-          placeholder="Name"
+          placeholder="Full Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
-        {errors.name && <div style={{ color: "red" }}>*{errors.name}</div>}
+        {errors.name && (
+          <div className="error-message" style={{ color: "red" }}>
+            *{errors.name}
+          </div>
+        )}
+        <label>Email</label>
         <input
           type="email"
-          placeholder="Email"
+          placeholder="example@email.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        {errors.email && <div style={{ color: "red" }}>*{errors.email}</div>}
+        {errors.email && (
+          <div className="error-message" style={{ color: "red" }}>
+            *{errors.email}
+          </div>
+        )}
+        <label>Password</label>
         <input
           type="password"
           placeholder="Password"
@@ -137,24 +151,35 @@ function Register() {
           onChange={(e) => setPassword(e.target.value)}
         />
         {errors.password && (
-          <div style={{ color: "red" }}>*{errors.password}</div>
+          <div className="error-message" style={{ color: "red" }}>
+            *{errors.password}
+          </div>
         )}
+        <label>Password Confirmation</label>
         <input
           type="password"
-          placeholder="Re-Type Password"
+          placeholder="Confirm Password"
           value={passwordConfirmation}
           onChange={(e) => setPasswordConfirmation(e.target.value)}
         />
         {errors.passwordConfirmation && (
-          <div style={{ color: "red" }}>*{errors.passwordConfirmation}</div>
+          <div className="error-message" style={{ color: "red" }}>
+            *{errors.passwordConfirmation}
+          </div>
         )}
+        <label>Phone Number</label>
         <input
           type="text"
           placeholder="XXX-XXX-XXXX"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
         />
-        {errors.phone && <div style={{ color: "red" }}>*{errors.phone}</div>}
+        {errors.phone && (
+          <div className="error-message" style={{ color: "red" }}>
+            *{errors.phone}
+          </div>
+        )}
+        <label>Date of Birth</label>
         <input
           type="date"
           placeholder="Date of Birth"
@@ -162,12 +187,22 @@ function Register() {
           onChange={(e) => setDateOfBirth(e.target.value)}
         />
         {errors.dateOfBirth && (
-          <div style={{ color: "red" }}>{errors.dateOfBirth}</div>
+          <div className="error-message" style={{ color: "red" }}>
+            {errors.dateOfBirth}
+          </div>
         )}
         <button type="submit">Register</button>
       </form>
-      {submissionMessage && <div>{submissionMessage}</div>}
-    </div>
+      <div className="prompt">
+        Already have an account?
+        <Link to="/login" className="prompt-link">
+          Login
+        </Link>
+      </div>
+      {submissionMessage && (
+        <div className="failed-message">{submissionMessage}</div>
+      )}
+    </section>
   );
 }
 
