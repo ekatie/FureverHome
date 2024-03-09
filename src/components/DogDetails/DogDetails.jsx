@@ -1,4 +1,6 @@
 import React from "react";
+import FemaleIcon from '@mui/icons-material/Female';
+import MaleIcon from '@mui/icons-material/Male';
 
 function DogDetails() {
   return (
