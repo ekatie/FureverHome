@@ -3,6 +3,8 @@ import { useDispatch } from "react-redux";
 import API, { setAuthToken } from "../../services/api";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../features/authSlice";
+import { Link } from "react-router-dom";
+import "./Login.scss";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -30,20 +32,23 @@ function Login() {
   };
 
   return (
-    <div>
-      <h1>Login</h1>
+    <section className="form">
+      <h1 className="page-title">Welcome back!</h1>
+      <h2>Log in to continue.</h2>
       <form
         onSubmit={(e) => {
           e.preventDefault();
           handleSubmit(email, password);
         }}
       >
+        <label>Email</label>
         <input
           type="text"
-          placeholder="Email"
+          placeholder="example@email.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
+        <label>Password</label>
         <input
           type="password"
           placeholder="Password"
@@ -52,7 +57,13 @@ function Login() {
         />
         <button type="submit">Login</button>
       </form>
-    </div>
+      <div className="prompt">
+        Don't have an account?
+        <Link to="/register" className="prompt-link">
+          Sign Up
+        </Link>
+      </div>
+    </section>
   );
 }
 
