@@ -16,7 +16,7 @@ function UserProfile() {
   const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
 
-  const state = useSelector((state) => state);
+  // const state = useSelector((state) => state);
 
   useEffect(() => {
     setFormData({
