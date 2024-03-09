@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchDogsAsync, toggleFavouriteAsync } from "../../features/dogSlice";
+import { fetchDogsAsync } from "../../features/dogSlice";
 import DogListItem from "../DogListItem/DogListItem";
 import "./DogList.scss";
 
@@ -22,17 +22,15 @@ const DogList = () => {
 
   return (
     <div>
-      <h1 className="page-title">Available Dogs</h1>
+      <h1 className="page-title">Adoptable Dogs</h1>
       <ul className="dog-list">
         {dogs.map((dog) => (
           <DogListItem
             key={dog.id}
+            id={dog.id}
             name={dog.name}
             imageUrl={dog.default_image_url}
             isFavourite={dog.isFavourite}
-            onToggleFavourite={() =>
-              dispatch(toggleFavouriteAsync({ dogId: dog.id }))
-            }
           />
         ))}
       </ul>
@@ -41,20 +39,3 @@ const DogList = () => {
 };
 
 export default DogList;
-
-// <article key={dog.id} className="dog-list-item">
-//   <Link to={`/dogs/${dog.id}`} className="dog-link">
-//     {dog.name}
-//   </Link>
-//   <DogListItem
-//     key={dog.id}
-//     name={dog.name}
-//     imageUrl={dog.default_image_url}
-//   />
-//   <FavButton
-//     selected={dog.isFavourite}
-//     onToggleFavourite={() =>
-//       dispatch(toggleFavouriteAsync({ dogId: dog.id }))
-//     }
-//   />
-// </article>
