@@ -8,7 +8,6 @@ const DogListItem = ({
   name,
   imageUrl,
   isFavourite,
-  onToggleFavourite,
 }) => {
   return (
     <li className="dog-list-item">
