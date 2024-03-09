@@ -40,9 +40,11 @@ function App() {
   }, [dispatch]);
 
   return (
-    <div className="App">
-      <NavigationBar />
-      <RoutesComponent />
+    <div className="App site-container">
+      <div className="content-wrap">
+        <NavigationBar />
+        <RoutesComponent />
+      </div>
       <Footer />
       <ToastContainer />
     </div>
