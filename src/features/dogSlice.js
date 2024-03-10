@@ -12,9 +12,10 @@ export const fetchDogsAsync = createAsyncThunk(
 
 export const toggleFavouriteAsync = createAsyncThunk(
   'dogs/toggleFavorite',
-  async ({ dogId, userId }, { getState }) => {
+  async ({ dogId, userId }, { getState }
+  ) => {
     const response = await API.post(`/dogs/${dogId}/favourite`);
-    return response.data;
+    return { dogId, isFavourite: response.data.is_favourite };
   }
 );
 
@@ -45,10 +46,14 @@ const dogSlice = createSlice({
       state.dogs = state.dogs.map(dog =>
         dog.id === id ? { ...dog, isFavourite } : dog
       );
+      dispatchEvent(toggleFavouriteAsync({ id, isFavourite }));
     },
     fetchFavourites(state, action) {
       state.dogs = action.payload;
     },
+    resetFavourites(state) {
+      state.dogs = state.dogs.map(dog => ({ ...dog, isFavourite: false }));
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -63,15 +68,15 @@ const dogSlice = createSlice({
         state.status = "failed";
       });
     builder.addCase(toggleFavouriteAsync.fulfilled, (state, action) => {
-      const { dog_id } = action.payload;
-      const dogIndex = state.dogs.findIndex(dog => dog.id === dog_id);
-      if (dogIndex !== -1) {
-        state.dogs[dogIndex].isFavourite = !state.dogs[dogIndex].isFavourite;
+      const { dogId, isFavourite } = action.payload;
+      const index = state.dogs.findIndex(dog => dog.id === dogId);
+      if (index !== -1) {
+        state.dogs[index] = { ...state.dogs[index], is_favourite: isFavourite };
       }
     });
   }
 });
 
 
-export const { fetchDogs, addDog, updateDog, fetchDog, toggleFavourite, fetchFavourites } = dogSlice.actions;
+export const { fetchDogs, addDog, updateDog, fetchDog, toggleFavourite, fetchFavourites, resetFavourites } = dogSlice.actions;
 export default dogSlice.reducer;
