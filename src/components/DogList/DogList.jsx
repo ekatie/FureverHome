@@ -30,7 +30,7 @@ const DogList = () => {
             id={dog.id}
             name={dog.name}
             imageUrl={dog.default_image_url}
-            isFavourite={dog.isFavourite}
+            isFavourite={dog.is_favourite}
           />
         ))}
       </ul>
