@@ -23,7 +23,7 @@ function App() {
         dispatch(login({ user: userData, token: authTokens.token }));
 
         try {
-          await API.get("/auth/validate_token");
+          await API.post("/auth/validate_token");
         } catch (error) {
           console.error("Token validation error:", error);
           localStorage.removeItem("authTokens");
