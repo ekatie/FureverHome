@@ -5,18 +5,19 @@ export const getDogs = async () => {
     const response = await API.get('/dogs');
     return response.data;
   } catch (error) {
-   throw error;
+    throw error;
   }
-}
+};
 
 export const getDog = async (id) => {
   try {
     const response = await API.get(`/dogs/${id}`);
+    console.log(response.data);
     return response.data;
   } catch (error) {
     throw error;
   }
-}
+};
 
 export const addDog = async (dog) => {
   try {
@@ -25,7 +26,7 @@ export const addDog = async (dog) => {
   } catch (error) {
     throw error;
   }
-}
+};
 
 export const updateDog = async (id, dog) => {
   try {
@@ -34,7 +35,7 @@ export const updateDog = async (id, dog) => {
   } catch (error) {
     throw error;
   }
-}
+};
 
 export const deleteDog = async (id) => {
   try {
@@ -43,4 +44,4 @@ export const deleteDog = async (id) => {
   } catch (error) {
     throw error;
   }
-}
+};
