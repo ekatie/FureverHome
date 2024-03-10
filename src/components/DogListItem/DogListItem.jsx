@@ -16,7 +16,7 @@ const DogListItem = ({
       </Link>
       <div className="dog-image-container">
         <img className="dog-image" src={imageUrl} alt={name} />
-        <FavButton selected={isFavourite} dogId={id} />
+        <FavButton isFavourite={isFavourite} dogId={id} />
       </div>
     </li>
   );
