@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import API, { setAuthToken } from "../../services/api";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from "../../features/authSlice";
+import { login } from "../../features/authSlice";
 import { Link } from "react-router-dom";
 import "./Login.scss";
 
@@ -24,7 +24,7 @@ function Login() {
       setAuthToken(token);
       
       // Dispatch the login action
-      dispatch(loginUser({ user, token }));
+      dispatch(login({ user, token }));
 
       navigate("/");
     } catch (error) {
