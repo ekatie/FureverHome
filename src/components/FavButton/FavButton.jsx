@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { toggleFavouriteAsync } from "../../features/dogSlice";
 
-const FavButton = ({ selected, dogId }) => {
+const FavButton = ({ isFavourite, dogId }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
 
@@ -30,7 +30,7 @@ const FavButton = ({ selected, dogId }) => {
 
   return (
     <div className="fav-button" onClick={() => handleToggleFavourite()}>
-      <FavIcon selected={selected} />
+      <FavIcon selected={isFavourite} />
     </div>
   );
 };
