@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import API, { setAuthToken } from "../../services/api";
 import { useNavigate } from "react-router-dom";
-import { login } from "../../features/authSlice";
+import { loginUser } from "../../features/authSlice";
 import { Link } from "react-router-dom";
 import "./Login.scss";
 
@@ -21,9 +21,10 @@ function Login() {
       localStorage.setItem("authTokens", JSON.stringify({ token }));
       localStorage.setItem("userData", JSON.stringify(user));
 
-      // Dispatch the login action
-      dispatch(login({ user, token }));
       setAuthToken(token);
+      
+      // Dispatch the login action
+      dispatch(loginUser({ user, token }));
 
       navigate("/");
     } catch (error) {
