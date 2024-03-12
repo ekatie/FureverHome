@@ -1,11 +1,44 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import API from "../services/api";
 
+export const addApplicationAsync = createAsyncThunk(
+  "application/addApplication",
+  async (userId) => {
+    try {
+      const response = await API.post(`/applications`, { application: { user_id: userId, status: "pending" } });
+      return response.data;
+    } catch (error) {
+      console.error("Add Application Error:", error.response || error);
+      throw error;
+    }
+  }
+);
+
 export const submitApplicationAsync = createAsyncThunk(
   "application/submitApplication",
-  async (application) => {
-    const response = await API.post("/applications", application);
-    return response.data;
+  async (applicationData, { getState }) => {
+    const { id, ...updatePayload } = applicationData;
+    try {
+      const response = await API.put(`/applications/${id}`, { application: updatePayload });
+      console.log("submitApplicationAsync", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Submit Application Error:", error.response || error);
+      throw error;
+    }
+  }
+);
+
+export const fetchApplicationAsync = createAsyncThunk(
+  "application/fetchApplication",
+  async (userId) => {
+    try {
+      const response = await API.get(`/applications/${userId}`);
+      return response.data;
+    } catch (error) {
+      console.error("Fetch Application Error:", error.response || error);
+      throw error;
+    }
   }
 );
 
@@ -37,9 +70,32 @@ const applicationSlice = createSlice({
       })
       .addCase(submitApplicationAsync.fulfilled, (state, action) => {
         state.status = "succeeded";
+        console.log("submitApplicationAsync.fulfilled", action.payload);
         state.application = action.payload;
       })
       .addCase(submitApplicationAsync.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      });
+    builder
+      .addCase(fetchApplicationAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchApplicationAsync.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.application = action.payload;
+      })
+      .addCase(fetchApplicationAsync.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      });
+    builder
+      .addCase(addApplicationAsync.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        console.log("addApplicationAsync.fulfilled", action.payload);
+        state.application = action.payload;
+      })
+      .addCase(addApplicationAsync.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
       });
