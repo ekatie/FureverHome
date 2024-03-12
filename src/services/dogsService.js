@@ -12,7 +12,6 @@ export const getDogs = async () => {
 export const getDog = async (id) => {
   try {
     const response = await API.get(`/dogs/${id}`);
-    console.log(response.data);
     return response.data;
   } catch (error) {
     throw error;
