@@ -5,6 +5,7 @@ import {
   submitApplicationAsync,
   fetchApplicationAsync,
   addApplicationAsync,
+  fetchMatchesAsync,
 } from "../../features/applicationSlice";
 import { toast } from "react-toastify";
 import { unwrapResult } from "@reduxjs/toolkit";
@@ -123,6 +124,17 @@ function ApplicationForm() {
       });
     }
   };
+
+  // Fetch matches if the application status is "pending dog selection"
+  useEffect(() => {
+    if (applicationStatus === "pending dog selection" && applicationState.id) {
+      dispatch(fetchMatchesAsync(applicationState.id));
+    }
+  }, [dispatch, applicationStatus, applicationState.id]);
+
+  // Accessing the matches from the application state
+  const matches = useSelector((state) => state.application.matches || []);
+  console.log("matches", matches);
 
   return (
     <main className="application-form">
@@ -552,7 +564,8 @@ function ApplicationForm() {
                 htmlFor="tiny"
                 type="checkbox"
                 name="dog_size"
-                value={formState.dog_size}
+                value="Tiny"
+                checked={formState.dog_size.includes("Tiny")}
                 onChange={handleCheckboxChange}
               />
               <label htmlFor="tiny">Tiny (under 20lbs)</label>
@@ -560,7 +573,8 @@ function ApplicationForm() {
                 htmlFor="small"
                 type="checkbox"
                 name="dog_size"
-                value={formState.dog_size}
+                value="Small"
+                checked={formState.dog_size.includes("Small")}
                 onChange={handleCheckboxChange}
               />
               <label htmlFor="small">Small (20 to 29lbs)</label>
@@ -568,7 +582,8 @@ function ApplicationForm() {
                 htmlFor="medium"
                 type="checkbox"
                 name="dog_size"
-                value={formState.dog_size}
+                value="Medium"
+                checked={formState.dog_size.includes("Medium")}
                 onChange={handleCheckboxChange}
               />
               <label htmlFor="medium">Medium (30 to 49lbs)</label>
@@ -576,7 +591,8 @@ function ApplicationForm() {
                 htmlFor="large"
                 type="checkbox"
                 name="dog_size"
-                value={formState.dog_size}
+                value="Large"
+                checked={formState.dog_size.includes("Large")}
                 onChange={handleCheckboxChange}
               />
               <label htmlFor="large">Large (50 to 90lbs)</label>
@@ -584,7 +600,8 @@ function ApplicationForm() {
                 htmlFor="giant"
                 type="checkbox"
                 name="dog_size"
-                value={formState.dog_size}
+                value="Giant"
+                checked={formState.dog_size.includes("Giant")}
                 onChange={handleCheckboxChange}
               />
               <label htmlFor="giant">Giant (over 90lbs)</label>
@@ -595,37 +612,41 @@ function ApplicationForm() {
                 adopt? Please select all that apply.
               </p>
               <input
-                htmlFor="puppy"
+                htmlFor="Puppy"
                 type="checkbox"
                 name="dog_age"
-                value={formState.dog_age}
+                value="Puppy"
+                checked={formState.dog_age.includes("Puppy")}
                 onChange={handleCheckboxChange}
               />
-              <label htmlFor="puppy">Puppy (under 1 year)</label>
+              <label htmlFor="Puppy">Puppy (under 1 year)</label>
               <input
-                htmlFor="young"
+                htmlFor="Young"
                 type="checkbox"
                 name="dog_age"
-                value={formState.dog_age}
+                value="Young"
+                checked={formState.dog_age.includes("Young")}
                 onChange={handleCheckboxChange}
               />
-              <label htmlFor="young">Young (1 to 3 years)</label>
+              <label htmlFor="Young">Young (1 to 3 years)</label>
               <input
-                htmlFor="adult"
+                htmlFor="Adult"
                 type="checkbox"
                 name="dog_age"
-                value={formState.dog_age}
+                value="Adult"
+                checked={formState.dog_age.includes("Adult")}
                 onChange={handleCheckboxChange}
               />
-              <label htmlFor="adult">Adult (3 to 8 years)</label>
+              <label htmlFor="Adult">Adult (3 to 8 years)</label>
               <input
-                htmlFor="senior"
+                htmlFor="Senior"
                 type="checkbox"
                 name="dog_age"
-                value={formState.dog_age}
+                value="Senior"
+                checked={formState.dog_age.includes("Senior")}
                 onChange={handleCheckboxChange}
               />
-              <label htmlFor="senior">Senior (over 8 years)</label>
+              <label htmlFor="Senior">Senior (over 8 years)</label>
             </div>
             <div>
               <p>
@@ -749,10 +770,25 @@ function ApplicationForm() {
         </form>
       )}
       {applicationStatus === "pending dog selection" && (
-        <p>
-          Your application is pending dog selection. You will be notified when
-          you have been matched with a dog.
-        </p>
+        <>
+          <h3>
+            Your application is pending dog selection. Below are your matches:
+          </h3>
+          <ul>
+            {matches.map((dog) => (
+              <li key={dog.id}>
+                <img
+                  src={dog.default_image_url}
+                  alt={dog.name}
+                  style={{ width: "100px", height: "100px" }}
+                />
+                <h4>{dog.name}</h4>
+                <p>Match Percentage: {dog.match_percentage}%</p>
+                {/* Additional dog details can be listed here */}
+              </li>
+            ))}
+          </ul>
+        </>
       )}
     </main>
   );
