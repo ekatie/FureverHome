@@ -42,6 +42,19 @@ export const fetchApplicationAsync = createAsyncThunk(
   }
 );
 
+export const fetchMatchesAsync = createAsyncThunk(
+  "application/fetchMatches",
+  async (applicationId) => {
+    try {
+      const response = await API.get(`/applications/${applicationId}/matches`);
+      return response.data;
+    } catch (error) {
+      console.error("Fetch Matches Error:", error.response || error);
+      throw error;
+    }
+  }
+);
+
 const initialState = {
   application: {},
 };
@@ -98,6 +111,11 @@ const applicationSlice = createSlice({
       .addCase(addApplicationAsync.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
+      });
+    builder
+      .addCase(fetchMatchesAsync.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.matches = action.payload;
       });
   }
 });
