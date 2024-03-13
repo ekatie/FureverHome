@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { logoutUser } from "../../features/authSlice";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function NavigationBar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -28,6 +29,16 @@ function NavigationBar() {
     dispatch(logoutUser());
     setIsDropdownOpen(false);
     navigate("/");
+    toast.success("You have successfully been logged out!", {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   };
 
   return (
@@ -84,11 +95,7 @@ function NavigationBar() {
                   >
                     Application
                   </Link>
-                  <Link
-                    to="/logout"
-                    className="dropdown-link"
-                    onClick={handleLogout}
-                  >
+                  <Link to="/" className="dropdown-link" onClick={handleLogout}>
                     Logout
                   </Link>
                 </>
@@ -109,11 +116,7 @@ function NavigationBar() {
                   >
                     Dashboard
                   </Link>
-                  <Link
-                    to="/logout"
-                    className="dropdown-link"
-                    onClick={handleLogout}
-                  >
+                  <Link to="/" className="dropdown-link" onClick={handleLogout}>
                     Logout
                   </Link>
                 </>
@@ -172,11 +175,7 @@ function NavigationBar() {
               >
                 Application
               </Link>
-              <Link
-                to="/logout"
-                className="dropdown-link"
-                onClick={handleLogout}
-              >
+              <Link to="/" className="dropdown-link" onClick={handleLogout}>
                 Logout
               </Link>
             </>
@@ -196,11 +195,7 @@ function NavigationBar() {
               >
                 Dashboard
               </Link>
-              <Link
-                to="/logout"
-                className="dropdown-link"
-                onClick={handleLogout}
-              >
+              <Link to="/" className="dropdown-link" onClick={handleLogout}>
                 Logout
               </Link>
             </>
@@ -212,5 +207,3 @@ function NavigationBar() {
 }
 
 export default NavigationBar;
-
-// style login and logout buttons
