@@ -9,6 +9,7 @@ import {
 } from "../../features/applicationSlice";
 import { toast } from "react-toastify";
 import { unwrapResult } from "@reduxjs/toolkit";
+import DogMatches from "../DogMatches/DogMatches";
 
 function ApplicationForm() {
   const [formState, setFormState] = useState({
@@ -39,6 +40,11 @@ function ApplicationForm() {
     dog_energy_level: "",
     dog_medical_conditions: "",
   });
+  const [selectedDogId, setSelectedDogId] = useState(null);
+
+  const handleSelectDog = (dogId) => {
+    setSelectedDogId(dogId);
+  };
 
   const { user } = useSelector((state) => state.auth);
   const applicationState = useSelector(
@@ -100,6 +106,7 @@ function ApplicationForm() {
       address: `${formState.streetAddress}, ${formState.city}, ${formState.province}`,
       status: "pending dog selection",
       id: applicationState.id,
+      selectedDogId: selectedDogId,
     };
 
     // Remove temporary fields not needed for submission
@@ -140,10 +147,7 @@ function ApplicationForm() {
     <main className="application-form">
       <h1 className="page-title">Adoption Application</h1>
       {applicationStatus === "not started" && (
-        <button
-          className="start-application-btn"
-          onClick={handleStartApplication}
-        >
+        <button className="application-btn" onClick={handleStartApplication}>
           Start Application
         </button>
       )}
@@ -770,43 +774,20 @@ function ApplicationForm() {
         </form>
       )}
       {applicationStatus === "pending dog selection" && (
-        <>
-          <h3>
-            Your application is pending dog selection. Below are your matches:
-          </h3>
-          <ul>
-            {matches.map((dog) => (
-              <li key={dog.id}>
-                <img
-                  src={dog.default_image_url}
-                  alt={dog.name}
-                  style={{ width: "100px", height: "100px" }}
-                />
-                <h4>{dog.name}</h4>
-                <p>Match Percentage: {dog.match_percentage}%</p>
-                {/* Additional dog details can be listed here */}
-              </li>
-            ))}
-          </ul>
-        </>
+        <DogMatches
+          matches={matches}
+          onSelectDog={handleSelectDog}
+          applicationId={applicationState.id}
+        />
+      )}
+      {applicationStatus === "submitted" && (
+        <p>
+          Application Status: Your application has been submitted and is pending
+          review.
+        </p>
       )}
     </main>
   );
 }
 
 export default ApplicationForm;
-
-// Render page based on application status
-// not started (initial state) - show button to start application
-// pending - show application form, upon submission show success message
-// pending dog selection - show dog selection page (dog matches)
-// submitted - show success message
-// display current application status
-
-/* <div className="app-question">
-          <p>Have you read the dog's adoption profile in full?</p>
-          <input htmlFor="yes" type="radio" name="read_profile" />
-          <label htmlFor="yes">Yes</label>
-          <input htmlFor="no" type="radio" name="read_profile" />
-          <label htmlFor="no">No</label>
-        </div> */
