@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getDogs } from "../services/dogsService";
+import { getDogs, getDog } from "../services/dogsService";
 import API from "../services/api";
 
 export const fetchDogsAsync = createAsyncThunk(
@@ -16,6 +16,14 @@ export const toggleFavouriteAsync = createAsyncThunk(
   ) => {
     const response = await API.post(`/dogs/${dogId}/favourite`);
     return { dogId, isFavourite: response.data.is_favourite };
+  }
+);
+
+export const fetchDogAsync = createAsyncThunk(
+  "dogs/fetchDog",
+  async (dogId) => {
+    const response = await getDog(dogId);
+    return response.data;
   }
 );
 
