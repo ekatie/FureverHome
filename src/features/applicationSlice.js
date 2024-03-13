@@ -55,6 +55,20 @@ export const fetchMatchesAsync = createAsyncThunk(
   }
 );
 
+export const confirmMatchAsync = createAsyncThunk(
+  "application/confirmMatch",
+  async ({ applicationId, dogId, readProfile }) => {
+    try {
+      const response = await API.put(`/applications/${applicationId}`, { application: { dog_id: dogId, status: "submitted", read_profile: readProfile } });
+      ;
+      return response.data;
+    } catch (error) {
+      console.error("Confirm Match Error:", error.response || error);
+      throw error;
+    }
+  }
+);
+
 const initialState = {
   application: {},
 };
