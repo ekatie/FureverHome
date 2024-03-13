@@ -4,7 +4,7 @@ import { fetchDogsAsync } from "../../features/dogSlice";
 import DogListItem from "../DogListItem/DogListItem";
 import "./DogList.scss";
 
-const DogList = () => {
+const DogList = ({ limit }) => {
   const dispatch = useDispatch();
   const dogs = useSelector((state) => state.dogs.dogs);
   const status = useSelector((state) => state.dogs.status);
@@ -20,11 +20,15 @@ const DogList = () => {
     return <div>Failed to load dogs</div>;
   }
 
+  // Sort dogs alphabetically by name
+  const sortedDogs = dogs.slice().sort((a, b) => a.name.localeCompare(b.name));
+  const limitedDogs = limit ? sortedDogs.slice(0, limit) : sortedDogs;
+
   return (
     <div>
       <h1 className="page-title">Adoptable Dogs</h1>
       <ul className="dog-list">
-        {dogs.map((dog) => (
+        {limitedDogs.map((dog) => (
           <DogListItem
             key={dog.id}
             id={dog.id}
