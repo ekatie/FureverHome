@@ -141,7 +141,6 @@ function ApplicationForm() {
 
   // Accessing the matches from the application state
   const matches = useSelector((state) => state.application.matches || []);
-  console.log("matches", matches);
 
   return (
     <main className="application-form">
