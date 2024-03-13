@@ -20,10 +20,8 @@ export const submitApplicationAsync = createAsyncThunk(
     const { id, ...updatePayload } = applicationData;
     try {
       const response = await API.put(`/applications/${id}`, { application: updatePayload });
-      console.log("submitApplicationAsync", response.data);
       return response.data;
     } catch (error) {
-      console.error("Submit Application Error:", error.response || error);
       throw error;
     }
   }
@@ -97,7 +95,6 @@ const applicationSlice = createSlice({
       })
       .addCase(submitApplicationAsync.fulfilled, (state, action) => {
         state.status = "succeeded";
-        console.log("submitApplicationAsync.fulfilled", action.payload);
         state.application = action.payload;
       })
       .addCase(submitApplicationAsync.rejected, (state, action) => {
@@ -119,7 +116,6 @@ const applicationSlice = createSlice({
     builder
       .addCase(addApplicationAsync.fulfilled, (state, action) => {
         state.status = "succeeded";
-        console.log("addApplicationAsync.fulfilled", action.payload);
         state.application = action.payload;
       })
       .addCase(addApplicationAsync.rejected, (state, action) => {
