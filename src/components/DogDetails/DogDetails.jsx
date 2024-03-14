@@ -1,10 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchDogAsync } from "../../features/dogSlice";
 import FemaleIcon from "@mui/icons-material/Female";
 import MaleIcon from "@mui/icons-material/Male";
 import "./DogDetails.scss";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import FavIcon from "../FavIcon/FavIcon";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDog } from "@fortawesome/free-solid-svg-icons";
+import GaugeMeter from "./GaugeMeter";
 
 function DogDetails() {
   const { id } = useParams();
@@ -12,8 +17,7 @@ function DogDetails() {
   const dog = useSelector((state) =>
     state.dogs.dogs.find((dog) => dog.id.toString() === id)
   );
-
-  console.log(dog);
+  const [expandedImg, setExpandedImg] = useState("");
 
   useEffect(() => {
     if (!dog && id) {
@@ -21,24 +25,111 @@ function DogDetails() {
     }
   }, [id, dispatch, dog]);
 
+  useEffect(() => {
+    if (dog && dog.images && dog.images.length > 0) {
+      setExpandedImg(dog.images[0]);
+    }
+  }, [dog]);
+
+  const handleImageClick = (imageUrl) => {
+    setExpandedImg(imageUrl);
+  };
+
   if (!dog) {
     return <div>Loading dog details...</div>;
   }
 
+  const getSizeCategory = (size) => {
+    if (size >= 0 && size <= 19) return 0; // Tiny
+    if (size >= 20 && size <= 29) return 1; // Small
+    if (size >= 30 && size <= 49) return 2; // Medium
+    if (size >= 50 && size <= 90) return 3; // Large
+    if (size >= 91) return 4; // Giant
+    return -1; // Default, in case it doesn't fit any category
+  };
+
+  const dogSizeCategory = getSizeCategory(dog.size);
+
   return (
     <article className="dog-details">
-      <h1 className="page-title">{dog.name}</h1>
-      <div>
+      <h1 className="page-title">
+        {dog.name} <FavIcon selected={dog.is_favourite} />
+      </h1>
+      <div className="top-section">
+        <div className="basic-info">
+          <p className="detail-label">Age:</p>
+          <p className="detail-text">{Math.floor(dog.age)} years</p>
+          <p className="detail-label">Breed: </p>
+          <p className="detail-text">{dog.breed}</p>
+          <p className="detail-label">Sex:</p>
+          <p className="detail-text">
+            {dog.sex === "Female" ? (
+              <FemaleIcon className="sex-icon" />
+            ) : (
+              <MaleIcon className="sex-icon" />
+            )}{" "}
+            {/* {dog.sex} */}
+          </p>
+          <p className="detail-label">Size: </p>
+          <p className="detail-text">
+            {[0, 1, 2, 3, 4].map((_, index) => (
+              <FontAwesomeIcon
+                key={index}
+                icon={faDog}
+                style={{
+                  fontSize: `${1 + index * 0.2}em`,
+                  marginRight: "10px",
+                  color: index === dogSizeCategory ? "#f0a500" : "black",
+                }}
+              />
+            ))}
+            {dog.size} lbs
+          </p>
+          <p className="detail-label">Energy Level: </p>
+          <p className="detail-text">
+            <div className="dog-energy-level">
+              <GaugeMeter level={dog.energy_level} />
+            </div>
+          </p>
+          <p className="detail-label">Social Media: </p>
+          <a href={dog.social_media_link} className="social-link">
+            <InstagramIcon />
+          </a>
+        </div>
+
+        <div className="container">
+          <img src={expandedImg} alt="Expanded view" />
+        </div>
+
+        <div className="other-details">
+          <p className="detail-label">Good With Dogs:</p>
+          <p className="detail-text">{dog.good_with_dogs}</p>
+          <p className="detail-label">Good With Cats:</p>
+          <p className="detail-text">{dog.good_with_cats}</p>
+          <p className="detail-label">Good With Children:</p>
+          <p className="detail-text">{dog.good_with_kids}</p>
+          <p className="detail-label">Medical Conditions:</p>
+          <p className="detail-text">{dog.medical_conditions}</p>
+          <p className="detail-label">Current Status: </p>
+          <p className="detail-text">{dog.status}</p>
+          <p className="detail-label">Foster Location:</p>
+          <p className="detail-text">{dog.foster_location}</p>
+          <p className="detail-label">Adoption Fee: </p>
+          <p className="detail-text">${dog.adoption_fee}0</p>
+        </div>
+      </div>
+      <div className="dog-photos">
         {dog.images.map((imageUrl, index) => (
-          <img key={index} src={imageUrl} alt={`${dog.name} ${index + 1}`} />
+          <div
+            className="column"
+            key={index}
+            onClick={() => handleImageClick(imageUrl)}
+          >
+            <img src={imageUrl} alt={`${dog.name} ${index + 1}`} />
+          </div>
         ))}
       </div>
-      <p>Breed: {dog.breed}</p>
-      <p>Age: {dog.age} years</p>
-      <p>Size: {dog.size}</p>
-      <p>
-        {dog.sex === "Female" ? <FemaleIcon /> : <MaleIcon />} {dog.sex}
-      </p>
+      <div className="description">{dog.description}</div>
     </article>
   );
 }

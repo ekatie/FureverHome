@@ -1,8 +1,134 @@
 .dog-details {
+  min-height: auto;
+  background-color: #f5f5f5;
+  padding: 10px 40px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 80%;
+  margin: auto;
+  margin-top: 25px;
+  margin-bottom: 20px;
+  border-radius: 8px;
 
-  img {
-    width: 30%;
-    height: 100%;
-    object-fit: cover;
+  .top-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    .basic-info, .other-details {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .sex-icon {
+      font-size: 2.4em;
+      color: #f0a500;
+    }
+
+    .container {
+      flex: 2;
+    }
+
   }
+
+  .dog-photos {
+    display: flex;
+    flex-wrap: nowrap;
+    width: 50%;
+    margin: 0 auto;
+    justify-content: center;
+    
+    .column {
+      padding: 10px;
+      flex: 1 1 20%;
+      max-width: 20%;
+      
+      img {
+        opacity: 0.8;
+        cursor: pointer;
+        transition: opacity 0.3s ease;
+        width: 100px;
+        max-width: 100%;
+        object-fit: cover;
+        height: 150px;
+        
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
+  }
+  
+  .container {
+    display: flex;
+    justify-content: center;
+    
+    img {
+      display: block;
+      width: auto;
+      height: 450px;
+      object-fit: cover;
+      margin-bottom: 20px;
+    }
+  }
+
+  .description {
+    margin: 20px 30px;
+    line-height: 1.5;
+  }
+  
+    .row::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+  .detail-label {
+    font-weight: 500;
+    font-size: 1em;
+    margin-bottom: 10px;
+    margin-top: 0;
+  }
+  
+  .detail-text {
+    margin-bottom: 15px;
+    margin-top: 0;
+  }
+
+  .social-link {
+    color: #000;
+    font-size: 1em;
+    transition: transform 0.2s ease;
+
+    &:hover {
+      color: #f0a500;
+      transform: scale(1.2);
+    }
+ }
+}
+
+.gauge-container {
+  width: 100%;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  color: #333;
+  margin: 10px 0;
+  position: relative;
+  border-radius: 15px;
+}
+
+.gauge {
+  height: 30px;
+  background-color: #f0a500;
+  transition: width 0.3s ease-in-out;
+  border-radius: 15px;
+}
+
+.gauge-label {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  top: 0;
+  line-height: 30px;
+  font-weight: 450;
 }
