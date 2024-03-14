@@ -9,19 +9,23 @@ import DogList from './components/DogList/DogList';
 import Login from './components/Login/Login';
 import Register from './components/Register/Register';
 import UserProfile from './components/UserProfile/UserProfile';
+import AdminApplicationList from './components/AdminApplicationList/AdminApplicationList';
+import AdminDogList from './components/AdminDogList/AdminDogList';
 
 const RoutesComponent = () => {
   return (
     <Routes>
       <Route exact path="/" element={<Home />} />
       <Route path="/about" element={<About />} />
-      <Route path="/dashboard" element={<AdminDashboard />} />
       <Route path="/application" element={<ApplicationForm />} />
       <Route path="/dogs/:id" element={<DogDetails />} />
       <Route path="/dogs" element={<DogList />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/profile" element={<UserProfile />} />
+      <Route path="/admin/dashboard" element={<AdminDashboard />} />
+      <Route path="/admin/applications" element={<AdminApplicationList />} />
+      <Route path="/admin/dogs" element={<AdminDogList />} />
     </Routes>
   );
 };
