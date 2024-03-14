@@ -10,6 +10,7 @@ import {
 import { toast } from "react-toastify";
 import { unwrapResult } from "@reduxjs/toolkit";
 import DogMatches from "../DogMatches/DogMatches";
+import { useNavigate } from "react-router-dom";
 
 function ApplicationForm() {
   const [formState, setFormState] = useState({
@@ -53,6 +54,7 @@ function ApplicationForm() {
   const applicationStatus = applicationState?.status || "not started";
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleStartApplication = () => {
     if (user?.id) {
@@ -106,7 +108,7 @@ function ApplicationForm() {
       address: `${formState.streetAddress}, ${formState.city}, ${formState.province}`,
       status: "pending dog selection",
       id: applicationState.id,
-      selectedDogId: selectedDogId,
+      dog_id: selectedDogId,
     };
 
     // Remove temporary fields not needed for submission
@@ -141,6 +143,19 @@ function ApplicationForm() {
 
   // Accessing the matches from the application state
   const matches = useSelector((state) => state.application.matches || []);
+
+  const onMatchConfirmed = () => {
+    if (user?.id) {
+      dispatch(fetchApplicationAsync(user.id))
+        .then(unwrapResult)
+        .then(() => {
+          navigate("/application");
+        })
+        .catch((error) => {
+          console.error("Error fetching updated application:", error);
+        });
+    }
+  };
 
   return (
     <main className="application-form">
@@ -777,12 +792,14 @@ function ApplicationForm() {
           matches={matches}
           onSelectDog={handleSelectDog}
           applicationId={applicationState.id}
+          onMatchConfirmed={onMatchConfirmed}
         />
       )}
       {applicationStatus === "submitted" && (
         <p>
-          Application Status: Your application has been submitted and is pending
-          review.
+          <span className="label-text">Application Status:</span> Your
+          application has been submitted and is pending review. Please check
+          back in a few days for an update.
         </p>
       )}
     </main>
