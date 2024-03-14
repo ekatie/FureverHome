@@ -129,7 +129,11 @@ function DogDetails() {
           </div>
         ))}
       </div>
-      <div className="description">{dog.description}</div>
+      <div className="description">
+        {dog.description.split("\n\n").map((paragraph, index) => (
+          <p key={index}>{paragraph}</p>
+        ))}
+      </div>
     </article>
   );
 }
