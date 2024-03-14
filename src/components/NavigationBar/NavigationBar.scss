@@ -95,9 +95,12 @@
         }
     }
 
-    .profile-icon &:hover {
+    .profile-icon {
+      
+      &:hover {
       color: #f0a500;
     }
+  }
   }
 
   .dropdown-menu {
