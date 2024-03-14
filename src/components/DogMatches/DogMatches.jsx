@@ -7,7 +7,12 @@ import { unwrapResult } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 
-const DogMatches = ({ matches, onSelectDog, applicationId }) => {
+const DogMatches = ({
+  matches,
+  onSelectDog,
+  applicationId,
+  onMatchConfirmed,
+}) => {
   const [selectedDogId, setSelectedDogId] = useState(null);
   const [hasReadProfile, setHasReadProfile] = useState(false);
   const dispatch = useDispatch();
@@ -50,6 +55,7 @@ const DogMatches = ({ matches, onSelectDog, applicationId }) => {
             progress: undefined,
             theme: "light",
           });
+          onMatchConfirmed();
         })
         .catch((error) => {
           console.error("Confirm match error:", error);
