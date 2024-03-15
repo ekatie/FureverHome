@@ -10,10 +10,13 @@ import FavIcon from "../FavIcon/FavIcon";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDog } from "@fortawesome/free-solid-svg-icons";
 import GaugeMeter from "./GaugeMeter";
+import { useNavigate } from "react-router-dom";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 function DogDetails() {
   const { id } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const dog = useSelector((state) =>
     state.dogs.dogs.find((dog) => dog.id.toString() === id)
   );
@@ -52,9 +55,16 @@ function DogDetails() {
 
   return (
     <article className="dog-details">
-      <h1 className="page-title">
-        {dog.name} <FavIcon selected={dog.is_favourite} />
-      </h1>
+      <div className="page-header">
+        <ArrowBackIcon
+          className="back-icon"
+          onClick={() => navigate("/dogs")}
+        />
+        <h1 className="page-title">
+          {dog.name} <FavIcon selected={dog.is_favourite} />
+        </h1>
+      </div>
+
       <div className="top-section">
         <div className="basic-info">
           <p className="detail-label">Age:</p>
