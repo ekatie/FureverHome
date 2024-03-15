@@ -9,8 +9,14 @@ import { fetchAdminApplicationsAsync } from "../../features/applicationSlice";
 
 const AdminApplicationList = () => {
   const dispatch = useDispatch();
-  const applications = useSelector((state) => state.application.applications);
+  const applications = useSelector((state) =>
+    [...state.application.applications].sort(
+      (a, b) => new Date(a.created_at) - new Date(b.created_at)
+    )
+  );
   const navigate = useNavigate();
+
+  console.log("applications", applications);
 
   useEffect(() => {
     dispatch(fetchAdminApplicationsAsync());
@@ -19,7 +25,10 @@ const AdminApplicationList = () => {
   return (
     <section className="admin-list">
       <div className="page-header">
-        <ArrowBackIcon className="back-icon" onClick={() => navigate("/admin/dashboard")} />
+        <ArrowBackIcon
+          className="back-icon"
+          onClick={() => navigate("/admin/dashboard")}
+        />
         <h1 className="page-title">Admin Application List</h1>
       </div>
       <table className="admin-table">
