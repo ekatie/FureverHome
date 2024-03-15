@@ -1,11 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { getAdminApplications, getAdminApplication } from "../services/applicationsService";
 import API from "../services/api";
 
 export const addApplicationAsync = createAsyncThunk(
   "application/addApplication",
   async (userId) => {
     try {
-      const response = await API.post(`/applications`, { application: { user_id: userId, status: "pending" } });
+      const response = await API.post(`/applications`, { application: { user_id: userId, status: "Pending" } });
       return response.data;
     } catch (error) {
       console.error("Add Application Error:", error.response || error);
@@ -57,8 +58,7 @@ export const confirmMatchAsync = createAsyncThunk(
   "application/confirmMatch",
   async ({ applicationId, dogId, readProfile }) => {
     try {
-      const response = await API.put(`/applications/${applicationId}`, { application: { dog_id: dogId, status: "submitted", read_profile: readProfile } });
-      ;
+      const response = await API.put(`/applications/${applicationId}`, { application: { dog_id: dogId, status: "Submitted", read_profile: readProfile } });
       return response.data;
     } catch (error) {
       console.error("Confirm Match Error:", error.response || error);
@@ -67,8 +67,25 @@ export const confirmMatchAsync = createAsyncThunk(
   }
 );
 
+export const fetchAdminApplicationsAsync = createAsyncThunk(
+  "application/fetchAdminApplications",
+  async () => {
+    const response = await getAdminApplications();
+    return response;
+  }
+);
+
+export const fetchAdminApplicationAsync = createAsyncThunk(
+  "application/fetchAdminApplication",
+  async (applicationId) => {
+    const response = await getAdminApplication(applicationId);
+    return response;
+  }
+);
+
 const initialState = {
   application: {},
+  applications: [],
 };
 
 const applicationSlice = createSlice({
@@ -126,6 +143,28 @@ const applicationSlice = createSlice({
       .addCase(fetchMatchesAsync.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.matches = action.payload;
+      })
+      .addCase(fetchMatchesAsync.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      });
+    builder
+      .addCase(fetchAdminApplicationsAsync.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.applications = action.payload;
+      })
+      .addCase(fetchAdminApplicationsAsync.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      });
+    builder
+      .addCase(fetchAdminApplicationAsync.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.application = action.payload;
+      })
+      .addCase(fetchAdminApplicationAsync.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
       });
   }
 });
