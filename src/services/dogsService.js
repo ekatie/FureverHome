@@ -9,6 +9,24 @@ export const getDogs = async () => {
   }
 };
 
+export const getAdminDogs = async () => {
+  try {
+    const response = await API.get('/admin/dogs');
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getAdminDog = async (id) => {
+  try {
+    const response = await API.get(`/admin/dogs/${id}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const getDog = async (id) => {
   try {
     const response = await API.get(`/dogs/${id}`);
