@@ -1,9 +1,66 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAdminDogsAsync } from "../../features/dogSlice";
+import { useEffect } from "react";
+import EditIcon from "@mui/icons-material/Edit";
+import "./AdminDogList.scss";
+import { useNavigate } from "react-router-dom";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const AdminDogList = () => {
+  const dispatch = useDispatch();
+  const dogs = useSelector((state) => state.dogs.dogs);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    dispatch(fetchAdminDogsAsync());
+  }, [dispatch]);
+
+  const navigateToEdit = (dogId) => {
+    navigate(`/admin/dogs/${dogId}`);
+  };
+
   return (
-    <section className="admin-dog-list">
-      <h1 className="page-title">Admin Dog List</h1>
+    <section className="admin-list">
+      <div className="page-header">
+        <ArrowBackIcon className="back-icon" onClick={() => navigate("/admin/dashboard")} />
+        <h1 className="page-title">Current Dogs</h1>
+      </div>
+      <table className="admin-table">
+        <thead>
+          <tr>
+            <th>Photo</th>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Location</th>
+            <th>Edit</th>
+          </tr>
+        </thead>
+        <tbody>
+          {dogs.map((dog) => (
+            <tr key={dog.id} className="admin-row">
+              <td>
+                <img
+                  src={dog.default_image_url}
+                  alt={dog.name}
+                  className="list-image"
+                />
+              </td>
+              <td>{dog.name}</td>
+              <td>{dog.status}</td>
+              <td>{dog.foster_location}</td>
+              <td>
+                <button
+                  className="edit-button"
+                  onClick={() => navigateToEdit(dog.id)}
+                >
+                  <EditIcon />
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </section>
   );
 };
