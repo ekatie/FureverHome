@@ -9,7 +9,10 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const AdminDogList = () => {
   const dispatch = useDispatch();
-  const dogs = useSelector((state) => state.dogs.dogs);
+  const dogs = useSelector((state) =>
+    [...state.dogs.dogs].sort((a, b) => a.name.localeCompare(b.name))
+  );
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,7 +26,10 @@ const AdminDogList = () => {
   return (
     <section className="admin-list">
       <div className="page-header">
-        <ArrowBackIcon className="back-icon" onClick={() => navigate("/admin/dashboard")} />
+        <ArrowBackIcon
+          className="back-icon"
+          onClick={() => navigate("/admin/dashboard")}
+        />
         <h1 className="page-title">Current Dogs</h1>
       </div>
       <table className="admin-table">
