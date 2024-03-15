@@ -51,7 +51,7 @@ function ApplicationForm() {
   const applicationState = useSelector(
     (state) => state.application.application
   );
-  const applicationStatus = applicationState?.status || "not started";
+  const applicationStatus = applicationState?.status || "Not Started";
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -106,7 +106,7 @@ function ApplicationForm() {
     const submissionData = {
       ...formState,
       address: `${formState.streetAddress}, ${formState.city}, ${formState.province}`,
-      status: "pending dog selection",
+      status: "Pending Dog Selection",
       id: applicationState.id,
       dog_id: selectedDogId,
     };
@@ -136,7 +136,7 @@ function ApplicationForm() {
 
   // Fetch matches if the application status is "pending dog selection"
   useEffect(() => {
-    if (applicationStatus === "pending dog selection" && applicationState.id) {
+    if (applicationStatus === "Pending Dog Selection" && applicationState.id) {
       dispatch(fetchMatchesAsync(applicationState.id));
     }
   }, [dispatch, applicationStatus, applicationState.id]);
@@ -157,15 +157,17 @@ function ApplicationForm() {
     }
   };
 
+  console.log("applicationState", applicationState);
+
   return (
     <main className="application-form">
       <h1 className="page-title">Adoption Application</h1>
-      {applicationStatus === "not started" && (
+      {applicationStatus === "Not Started" && (
         <button className="application-btn" onClick={handleStartApplication}>
           Start Application
         </button>
       )}
-      {applicationStatus === "pending" && (
+      {applicationStatus === "Pending" && (
         <form onSubmit={handleSubmit}>
           <section>
             <h2>Personal Information</h2>
@@ -787,7 +789,7 @@ function ApplicationForm() {
           <button type="submit">Submit</button>
         </form>
       )}
-      {applicationStatus === "pending dog selection" && (
+      {applicationStatus === "Pending Dog Selection" && (
         <DogMatches
           matches={matches}
           onSelectDog={handleSelectDog}
@@ -795,7 +797,7 @@ function ApplicationForm() {
           onMatchConfirmed={onMatchConfirmed}
         />
       )}
-      {applicationStatus === "submitted" && (
+      {applicationStatus === "Submitted" && (
         <p>
           <span className="label-text">Application Status:</span> Your
           application has been submitted and is pending review. Please check
