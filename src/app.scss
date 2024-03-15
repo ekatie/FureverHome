@@ -30,3 +30,22 @@
 .content-wrap {
   flex: 1;
 }
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  .back-icon {
+    position: absolute;
+    left: 0;
+    cursor: pointer;
+    transition: transform 0.2s;
+
+    &:hover {
+      color: #f0a500;
+      transform: scale(1.2);
+    }
+  }
+}
