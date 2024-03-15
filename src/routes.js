@@ -11,6 +11,8 @@ import Register from './components/Register/Register';
 import UserProfile from './components/UserProfile/UserProfile';
 import AdminApplicationList from './components/AdminApplicationList/AdminApplicationList';
 import AdminDogList from './components/AdminDogList/AdminDogList';
+import AdminEditDog from './components/AdminEditDog/AdminEditDog';
+import AdminApplicationDetails from './components/AdminApplicationDetails/AdminApplicationDetails';
 
 const RoutesComponent = () => {
   return (
@@ -26,6 +28,8 @@ const RoutesComponent = () => {
       <Route path="/admin/dashboard" element={<AdminDashboard />} />
       <Route path="/admin/applications" element={<AdminApplicationList />} />
       <Route path="/admin/dogs" element={<AdminDogList />} />
+      <Route path="/admin/dogs/:id" element={<AdminEditDog />} />
+      <Route path="/admin/applications/:id" element={<AdminApplicationDetails />} />
     </Routes>
   );
 };
