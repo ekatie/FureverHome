@@ -1,11 +1,27 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getDogs, getDog } from "../services/dogsService";
+import { getDogs, getDog, getAdminDogs, getAdminDog } from "../services/dogsService";
 import API from "../services/api";
 
 export const fetchDogsAsync = createAsyncThunk(
   "dogs/fetchDogs",
   async () => {
     const response = await getDogs();
+    return response;
+  }
+);
+
+export const fetchAdminDogsAsync = createAsyncThunk(
+  "dogs/fetchAdminDogs",
+  async () => {
+    const response = await getAdminDogs();
+    return response;
+  }
+);
+
+export const fetchAdminDogAsync = createAsyncThunk(
+  "dogs/fetchAdminDog",
+  async (dogId) => {
+    const response = await getAdminDog(dogId);
     return response;
   }
 );
@@ -82,6 +98,17 @@ const dogSlice = createSlice({
         state.dogs[index] = { ...state.dogs[index], is_favourite: isFavourite };
       }
     });
+    builder
+      .addCase(fetchAdminDogsAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchAdminDogsAsync.fulfilled, (state, action) => {
+        state.dogs = action.payload;
+        state.status = "succeeded";
+      })
+      .addCase(fetchAdminDogsAsync.rejected, (state) => {
+        state.status = "failed";
+      });
   }
 });
 
