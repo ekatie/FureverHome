@@ -26,10 +26,7 @@ const AdminDogList = () => {
   return (
     <section className="admin-list">
       <div className="page-header">
-        <ArrowBackIcon
-          className="back-icon"
-          onClick={() => navigate("/admin/dashboard")}
-        />
+        <ArrowBackIcon className="back-icon" onClick={() => navigate(-1)} />
         <h1 className="page-title">Current Dogs</h1>
       </div>
       <table className="admin-table">
