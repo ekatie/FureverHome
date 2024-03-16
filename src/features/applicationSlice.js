@@ -35,7 +35,6 @@ export const fetchApplicationAsync = createAsyncThunk(
       const response = await API.get(`/applications/${userId}`);
       return response.data;
     } catch (error) {
-      console.error("Fetch Application Error:", error.response || error);
       throw error;
     }
   }
@@ -79,6 +78,7 @@ export const fetchAdminApplicationAsync = createAsyncThunk(
   "application/fetchAdminApplication",
   async (applicationId) => {
     const response = await getAdminApplication(applicationId);
+    console.log("fetchadminappasync", response);
     return response;
   }
 );
