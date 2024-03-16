@@ -8,10 +8,7 @@ const AdminEditDog = () => {
   return (
     <div>
       <div className="page-header">
-        <ArrowBackIcon
-          className="back-icon"
-          onClick={() => navigate("/admin/dogs")}
-        />
+      <ArrowBackIcon className="back-icon" onClick={() => navigate(-1)} />
         <h1 className="page-title">Admin Edit Dog</h1>
       </div>
     </div>
