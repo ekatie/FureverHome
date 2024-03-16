@@ -1,8 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAdminApplicationAsync } from "../../features/applicationSlice";
+import {
+  fetchAdminApplicationAsync,
+  submitApplicationAsync,
+} from "../../features/applicationSlice";
 import "./AdminApplicationDetails.scss";
 import EditIcon from "@mui/icons-material/Edit";
 import FlagIcon from "@mui/icons-material/Flag";
@@ -12,6 +15,30 @@ const AdminApplicationDetails = () => {
   const navigate = useNavigate();
   const { id: applicationId } = useParams();
   const application = useSelector((state) => state.application.application);
+  const [editMode, setEditMode] = useState(false);
+  const [newStatus, setNewStatus] = useState(application.status);
+
+  const statusOptions = [
+    application.status,
+    "Under Review",
+    "Pending Interview Booking",
+    "Pending Meet and Greet Booking",
+    "Pending Adoption Date Booking",
+    "Awaiting Payment",
+    "Awaiting Contract Signature",
+    "Adoption Complete",
+    "Approved",
+    "Rejected",
+  ];
+
+  const handleChange = (event) => {
+    setNewStatus(event.target.value);
+  };
+
+  const handleSubmit = () => {
+    dispatch(submitApplicationAsync({ id: applicationId, status: newStatus }));
+    setEditMode(false);
+  };
 
   useEffect(() => {
     dispatch(fetchAdminApplicationAsync(applicationId));
@@ -61,17 +88,42 @@ const AdminApplicationDetails = () => {
               })}
             </p>
           </div>
-          <div className="info-row">
+          <div className={`info-row ${editMode ? "edit-mode" : ""}`}>
             <p className="details-label">Status: </p>
-            <p>
-              {application.status}
-              <button
-                className="edit-button"
-                // onClick={}
-              >
-                <EditIcon />
-              </button>
-            </p>
+            {editMode ? (
+              <div className="edit-mode-container">
+                <select
+                  value={newStatus}
+                  onChange={handleChange}
+                  className="status-select"
+                >
+                  {statusOptions.map((status) => (
+                    <option key={status} value={status}>
+                      {status}
+                    </option>
+                  ))}
+                </select>
+                <button onClick={handleSubmit} className="save-btn">
+                  Save
+                </button>
+                <button
+                  onClick={() => setEditMode(false)}
+                  className="cancel-btn"
+                >
+                  Cancel
+                </button>
+              </div>
+            ) : (
+              <p>
+                {application.status}
+                <button
+                  className="edit-button"
+                  onClick={() => setEditMode(true)}
+                >
+                  <EditIcon />
+                </button>
+              </p>
+            )}
           </div>
         </div>
         <div className="application-section">
