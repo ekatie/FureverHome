@@ -14,19 +14,19 @@ import { useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 function DogDetails() {
-  const { id } = useParams();
+  const { id: dogId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const dog = useSelector((state) =>
-    state.dogs.dogs.find((dog) => dog.id.toString() === id)
+    state.dogs.dogs.find((dog) => dog.id.toString() === dogId)
   );
   const [expandedImg, setExpandedImg] = useState("");
 
   useEffect(() => {
-    if (!dog && id) {
-      dispatch(fetchDogAsync(id));
+    if (!dog && dogId) {
+      dispatch(fetchDogAsync(dogId));
     }
-  }, [id, dispatch, dog]);
+  }, [dogId, dispatch, dog]);
 
   useEffect(() => {
     if (dog && dog.images && dog.images.length > 0) {
