@@ -103,6 +103,12 @@ const applicationSlice = createSlice({
     },
     cancelApplication(state, action) {
       state.application = action.payload;
+    },
+    updateApplicationStatus(state, action) {
+      const index = state.applications.findIndex((app) => app.id === action.payload.id);
+      if (index !== -1) {
+        state.applications[index].status = action.payload.status;
+      }
     }
   },
   extraReducers: (builder) => {
@@ -169,5 +175,5 @@ const applicationSlice = createSlice({
   }
 });
 
-export const { fetchApplication, addApplication, updateApplication, cancelApplication } = applicationSlice.actions;
+export const { fetchApplication, addApplication, updateApplication, cancelApplication, updateApplicationStatus } = applicationSlice.actions;
 export default applicationSlice.reducer;
