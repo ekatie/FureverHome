@@ -45,7 +45,7 @@ const AdminApplicationList = () => {
           {applications.map((app) => (
             <tr key={app.id} className="admin-row">
               <td>{app.user.name}</td>
-              <td>{app.dog.name}</td>
+              <td>{app.dog ? app.dog.name : "None Selected"}</td>
               <td>{app.status}</td>
               <td>
                 {new Date(app.created_at).toLocaleDateString("en-US", {
