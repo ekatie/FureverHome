@@ -56,10 +56,7 @@ function DogDetails() {
   return (
     <article className="dog-details">
       <div className="page-header">
-        <ArrowBackIcon
-          className="back-icon"
-          onClick={() => navigate("/dogs")}
-        />
+        <ArrowBackIcon className="back-icon" onClick={() => navigate(-1)} />
         <h1 className="page-title">
           {dog.name} <FavIcon selected={dog.is_favourite} />
         </h1>
