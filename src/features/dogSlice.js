@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getDogs, getDog, getAdminDogs, getAdminDog } from "../services/dogsService";
+import { getDogs, getDog, getAdminDogs, getAdminDog, adminUpdateDog, adminAddDog } from "../services/dogsService";
 import API from "../services/api";
 
 export const fetchDogsAsync = createAsyncThunk(
@@ -14,13 +14,15 @@ export const fetchAdminDogsAsync = createAsyncThunk(
   "dogs/fetchAdminDogs",
   async () => {
     const response = await getAdminDogs();
-    return response;
+    // Sort the dogs by name
+    const sortedDogs = response.sort((a, b) => a.name.localeCompare(b.name));
+    return sortedDogs;
   }
 );
 
 export const fetchAdminDogAsync = createAsyncThunk(
   "dogs/fetchAdminDog",
-  async (dogId) => {
+  async (dogId, { dispatch, getState }) => {
     const response = await getAdminDog(dogId);
     return response;
   }
@@ -39,6 +41,22 @@ export const fetchDogAsync = createAsyncThunk(
   "dogs/fetchDog",
   async (dogId) => {
     const response = await getDog(dogId);
+    return response.data;
+  }
+);
+
+export const addDogAsync = createAsyncThunk(
+  "dogs/addDog",
+  async ({ dog }) => {
+    const response = await adminAddDog(dog);
+    return response.data;
+  }
+);
+
+export const updateDogAsync = createAsyncThunk(
+  "dogs/updateDog",
+  async ({ id, dog }) => {
+    const response = await adminUpdateDog(id, dog);
     return response.data;
   }
 );
@@ -107,6 +125,22 @@ const dogSlice = createSlice({
         state.status = "succeeded";
       })
       .addCase(fetchAdminDogsAsync.rejected, (state) => {
+        state.status = "failed";
+      });
+    builder
+      .addCase(fetchAdminDogAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchAdminDogAsync.fulfilled, (state, action) => {
+        const index = state.dogs.findIndex(dog => dog.id === action.payload.id);
+        if (index !== -1) {
+          state.dogs[index] = action.payload;
+          state.status = "succeeded";
+        } else {
+          state.dogs.push(action.payload);
+        }
+      })
+      .addCase(fetchAdminDogAsync.rejected, (state) => {
         state.status = "failed";
       });
   }
