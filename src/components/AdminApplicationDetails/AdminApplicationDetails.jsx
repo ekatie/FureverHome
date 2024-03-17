@@ -4,11 +4,12 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchAdminApplicationAsync,
-  submitApplicationAsync,
+  adminUpdateApplicationAsync,
 } from "../../features/applicationSlice";
 import "./AdminApplicationDetails.scss";
 import EditIcon from "@mui/icons-material/Edit";
 import FlagIcon from "@mui/icons-material/Flag";
+import { toast } from "react-toastify";
 
 const AdminApplicationDetails = () => {
   const dispatch = useDispatch();
@@ -19,7 +20,7 @@ const AdminApplicationDetails = () => {
   const [newStatus, setNewStatus] = useState(application.status);
 
   const statusOptions = [
-    application.status,
+    "Submitted",
     "Under Review",
     "Pending Interview Booking",
     "Pending Meet and Greet Booking",
@@ -35,9 +36,42 @@ const AdminApplicationDetails = () => {
     setNewStatus(event.target.value);
   };
 
-  const handleSubmit = () => {
-    dispatch(submitApplicationAsync({ id: applicationId, status: newStatus }));
-    setEditMode(false);
+  const handleSubmit = async () => {
+    dispatch(
+      adminUpdateApplicationAsync({
+        applicationId: applicationId,
+        status: newStatus,
+      })
+    )
+      .then(() => {
+        setEditMode(false);
+        dispatch(fetchAdminApplicationAsync(applicationId));
+        toast.success("The application status has successfully been updated!", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      })
+      .catch((error) => {
+        toast.error(
+          "Failed to update the application status. Please try again.",
+          {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          }
+        );
+      });
   };
 
   useEffect(() => {
