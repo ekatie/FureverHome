@@ -131,6 +131,17 @@ function ApplicationForm() {
         progress: undefined,
         theme: "light",
       });
+    } else {
+      toast.error("There was an error submitting your application.", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
