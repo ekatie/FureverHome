@@ -9,9 +9,8 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const AdminDogList = () => {
   const dispatch = useDispatch();
-  const dogs = useSelector((state) =>
-    [...state.dogs.dogs].sort((a, b) => a.name.localeCompare(b.name))
-  );
+  const dogs = useSelector((state) => state.dogs.dogs);
+  const status = useSelector((state) => state.dogs.status);
 
   const navigate = useNavigate();
 
@@ -22,6 +21,13 @@ const AdminDogList = () => {
   const navigateToEdit = (dogId) => {
     navigate(`/admin/dogs/${dogId}`);
   };
+
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
+  if (status === "failed") {
+    return <div>Failed to load dogs</div>;
+  }
 
   return (
     <section className="admin-list">
