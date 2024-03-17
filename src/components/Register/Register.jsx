@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { register } from "../../features/authSlice";
 import { Link } from "react-router-dom";
 import "./../Login/Login.scss";
+import { toast } from "react-toastify";
 
 // Update to only require email and password for registration
 // User name, phone, and date of birth can be updated in the user profile
@@ -17,7 +18,6 @@ function Register() {
   const [phone, setPhone] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [errors, setErrors] = useState({});
-  const [submissionMessage, setSubmissionMessage] = useState("");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -100,7 +100,16 @@ function Register() {
       dispatch(register({ user: response.data.data, token: authToken }));
 
       // On successful submission
-      setSubmissionMessage("Registration successful! Redirecting...");
+      toast.success("Registration successful. Logging you in...", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
 
       // Redirect the user to their profile
       navigate("/profile");
@@ -110,7 +119,16 @@ function Register() {
         error.response?.data || error.message
       );
       // On submission error within your catch block
-      setSubmissionMessage("Registration failed. Please try again.");
+      toast.error("Registration failed. Please try again.", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
@@ -199,9 +217,6 @@ function Register() {
           Login
         </Link>
       </div>
-      {submissionMessage && (
-        <div className="failed-message">{submissionMessage}</div>
-      )}
     </section>
   );
 }
