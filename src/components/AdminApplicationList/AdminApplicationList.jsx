@@ -9,18 +9,21 @@ import { fetchAdminApplicationsAsync } from "../../features/applicationSlice";
 
 const AdminApplicationList = () => {
   const dispatch = useDispatch();
-  const applications = useSelector((state) =>
-    [...state.application.applications].sort(
-      (a, b) => new Date(a.created_at) - new Date(b.created_at)
-    )
-  );
-  const navigate = useNavigate();
+  const applications = useSelector((state) => state.application.applications);
+  const status = useSelector((state) => state.application.status);
 
-  console.log("applications", applications);
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchAdminApplicationsAsync());
   }, [dispatch]);
+
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
+  if (status === "failed") {
+    return <div>Failed to load applications</div>;
+  }
 
   return (
     <section className="admin-list">
