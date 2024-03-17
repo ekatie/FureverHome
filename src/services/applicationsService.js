@@ -17,3 +17,12 @@ export const getAdminApplication = async (id) => {
     throw error;
   }
 };
+
+export const adminUpdateApplication = async (id, status) => {
+  try {
+    const response = await API.put(`/admin/applications/${id}`, { application: { status } });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
