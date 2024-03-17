@@ -6,6 +6,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import "./AdminDogList.scss";
 import { useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 const AdminDogList = () => {
   const dispatch = useDispatch();
@@ -34,6 +35,9 @@ const AdminDogList = () => {
       <div className="page-header">
         <ArrowBackIcon className="back-icon" onClick={() => navigate(-1)} />
         <h1 className="page-title">Current Dogs</h1>
+        <button className="add-btn" onClick={() => navigate("/admin/dogs/new")}>
+          Add Dog
+        </button>
       </div>
       <table className="admin-table">
         <thead>

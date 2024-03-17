@@ -24,7 +24,7 @@
     }
 
     th {
-      background-color: #f0a40092;
+      background-color: #dfdfdf;
     }
 
     .admin-row {
@@ -62,6 +62,29 @@
         color: #f0a500;
         transform: scale(1.1);
       }
+    }
+  }
+
+  .add-btn {
+    position: absolute;
+    right: 20px;
+    padding: 10px 15px;
+    font-size: 1em;
+    font-weight: 500;
+    background-color: #f0a500;
+    color: black;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+
+    &:hover, &:focus {
+      transform: scale(1.05);
+      font-weight: 600;
+    }
+  
+    &:focus {
+      box-shadow: 0 0 0 2px #f0a40040;
     }
   }
 }
