@@ -28,6 +28,7 @@ const RoutesComponent = () => {
       <Route path="/admin/dashboard" element={<AdminDashboard />} />
       <Route path="/admin/applications" element={<AdminApplicationList />} />
       <Route path="/admin/dogs" element={<AdminDogList />} />
+      <Route path="/admin/dogs/new" element={<AdminEditDog />} />
       <Route path="/admin/dogs/:id" element={<AdminEditDog />} />
       <Route path="/admin/applications/:id" element={<AdminApplicationDetails />} />
     </Routes>
