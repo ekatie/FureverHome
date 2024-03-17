@@ -36,20 +36,22 @@ export const getDog = async (id) => {
   }
 };
 
-export const addDog = async (dog) => {
+export const adminAddDog = async (dog) => {
   try {
-    const response = await API.post('/dogs', dog);
+    const response = await API.post('admin/dogs', { dog });
     return response.data;
   } catch (error) {
     throw error;
   }
 };
 
-export const updateDog = async (id, dog) => {
+export const adminUpdateDog = async (id, dog) => {
   try {
-    const response = await API.put(`/dogs/${id}`, dog);
+    const response = await API.put(`/admin/dogs/${id}`, { dog });
+
     return response.data;
   } catch (error) {
+    console.error("Failed to update the dog:", error);
     throw error;
   }
 };
