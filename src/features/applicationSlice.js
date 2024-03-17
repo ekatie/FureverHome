@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getAdminApplications, getAdminApplication } from "../services/applicationsService";
+import { getAdminApplications, getAdminApplication, adminUpdateApplication } from "../services/applicationsService";
 import API from "../services/api";
 
 export const addApplicationAsync = createAsyncThunk(
@@ -70,7 +70,9 @@ export const fetchAdminApplicationsAsync = createAsyncThunk(
   "application/fetchAdminApplications",
   async () => {
     const response = await getAdminApplications();
-    return response;
+    // Sort applications by created_at date
+    const sortedApplications = response.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+    return sortedApplications;
   }
 );
 
@@ -78,7 +80,14 @@ export const fetchAdminApplicationAsync = createAsyncThunk(
   "application/fetchAdminApplication",
   async (applicationId) => {
     const response = await getAdminApplication(applicationId);
-    console.log("fetchadminappasync", response);
+    return response;
+  }
+);
+
+export const adminUpdateApplicationAsync = createAsyncThunk(
+  "application/updateAdminApplication",
+  async ({ applicationId, status }) => {
+    const response = await adminUpdateApplication(applicationId, status);
     return response;
   }
 );
@@ -155,6 +164,9 @@ const applicationSlice = createSlice({
         state.error = action.error.message;
       });
     builder
+      .addCase(fetchAdminApplicationsAsync.pending, (state) => {
+        state.status = "loading";
+      })
       .addCase(fetchAdminApplicationsAsync.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.applications = action.payload;
