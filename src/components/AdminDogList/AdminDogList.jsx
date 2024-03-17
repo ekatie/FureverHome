@@ -6,7 +6,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import "./AdminDogList.scss";
 import { useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 const AdminDogList = () => {
   const dispatch = useDispatch();
