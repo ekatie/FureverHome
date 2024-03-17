@@ -60,7 +60,6 @@ export const updateDogAsync = createAsyncThunk(
     return response.data;
   }
 );
-
 const dogSlice = createSlice({
   name: "dogs",
   initialState: {
