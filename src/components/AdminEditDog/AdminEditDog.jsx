@@ -19,21 +19,23 @@ const AdminEditDog = () => {
     state.dogs.dogs.find((dog) => dog.id === dogId)
   );
 
+  const [uploadedImages, setUploadedImages] = useState([]);
   const [dog, setDog] = useState({
     name: "",
     breed: "",
     age: 0,
     size: 0,
     description: "",
-    status: "",
-    energy_level: "",
+    status: "Available",
+    energy_level: "Low",
     foster_location: "",
     medical_conditions: "",
     adoption_fee: 0,
-    good_with_cats: false,
-    good_with_dogs: false,
-    good_with_kids: false,
+    good_with_cats: "",
+    good_with_dogs: "",
+    good_with_kids: "",
     social_media_link: "",
+    dog_images_attributes: [],
   });
 
   // On component mount, if editing, fetch dog details
@@ -58,10 +60,78 @@ const AdminEditDog = () => {
     }));
   };
 
+  useEffect(() => {
+    // Load the Cloudinary script
+    const script = document.createElement("script");
+    script.src = "https://upload-widget.cloudinary.com/global/all.js";
+    script.async = true;
+
+    document.body.appendChild(script);
+
+    // Cleanup to remove the script when the component unmounts
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  const handleUploadImages = () => {
+    window.cloudinary.openUploadWidget(
+      {
+        cloudName: "dh9t1ookl",
+        uploadPreset: "dogphotos",
+        sources: ["local", "url", "camera"],
+        multiple: true,
+        maxFiles: 10,
+      },
+      (error, result) => {
+        if (error) {
+          console.error("Upload error: ", error);
+          toast.error("Failed to upload images. Please try again.", {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          return;
+        }
+
+        if (result.event === "queues-end") {
+          const newImages = result.info.files.map((file, index) => ({
+            url: file.uploadInfo.secure_url,
+            is_default: uploadedImages.length === 0 && index === 0, // First image is default if no other images have been uploaded
+          }));
+          setUploadedImages((prev) => [...prev, ...newImages]);
+          toast.success("Images uploaded successfully!", {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
+      }
+    );
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { is_favourite, default_image_url, ...dogData } = dog;
+    const dogData = {
+      ...dog,
+      dog_images_attributes: uploadedImages.map((image) => ({
+        url: image.url,
+        is_default: image.is_default || false,
+      })),
+    };
+
+    console.log("dogData", dogData);
 
     let actionResult;
     if (dogId) {
@@ -69,6 +139,7 @@ const AdminEditDog = () => {
       actionResult = dispatch(updateDogAsync({ id: dogId, dog: dogData }));
     } else {
       // Add new dog
+      console.log("adding dog", dogData);
       actionResult = dispatch(addDogAsync({ dog: dogData }));
     }
 
@@ -104,10 +175,6 @@ const AdminEditDog = () => {
         });
       });
   };
-
-  if (!dogDetails) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <section className="admin-edit-dog">
@@ -239,13 +306,23 @@ const AdminEditDog = () => {
             <input
               htmlFor="good_with_dogs_no"
               type="radio"
-              name="sex"
+              name="good_with_dogs"
               className="radio-btn"
               value="No"
               checked={dog.good_with_dogs === "No"}
               onChange={handleChange}
             />
             <label htmlFor="good_with_dogs_no">No</label>
+            <input
+              htmlFor="good_with_dogs_untested"
+              type="radio"
+              name="good_with_dogs"
+              className="radio-btn"
+              value="Untested"
+              checked={dog.good_with_dogs === "Untested"}
+              onChange={handleChange}
+            />
+            <label htmlFor="good_with_dogs_untested">Untested</label>
           </div>
         </div>
         <div className="form-group">
@@ -274,17 +351,27 @@ const AdminEditDog = () => {
             <input
               htmlFor="good_with_cats_no"
               type="radio"
-              name="sex"
+              name="good_with_cats"
               className="radio-btn"
               value="No"
               checked={dog.good_with_cats === "No"}
               onChange={handleChange}
             />
             <label htmlFor="good_with_cats_no">No</label>
+            <input
+              htmlFor="good_with_cats_untested"
+              type="radio"
+              name="good_with_cats"
+              className="radio-btn"
+              value="Untested"
+              checked={dog.good_with_cats === "Untested"}
+              onChange={handleChange}
+            />
+            <label htmlFor="good_with_cats_untested">Untested</label>
           </div>
         </div>
         <div className="form-group">
-          <p>Good with kids:</p>
+          <p>Good with Kids:</p>
           <div className="radio-group">
             <input
               htmlFor="good_with_kids_yes"
@@ -309,13 +396,23 @@ const AdminEditDog = () => {
             <input
               htmlFor="good_with_kids_no"
               type="radio"
-              name="sex"
+              name="good_with_kids"
               className="radio-btn"
               value="No"
               checked={dog.good_with_kids === "No"}
               onChange={handleChange}
             />
             <label htmlFor="good_with_kids_no">No</label>
+            <input
+              htmlFor="good_with_kids_untested"
+              type="radio"
+              name="good_with_kids"
+              className="radio-btn"
+              value="Untested"
+              checked={dog.good_with_kids === "Untested"}
+              onChange={handleChange}
+            />
+            <label htmlFor="good_with_kids_untested">Untested</label>
           </div>
         </div>
         <div className="form-group">
@@ -367,10 +464,21 @@ const AdminEditDog = () => {
             onChange={handleChange}
           />
         </div>
-        {/* <div className="form-group images">
-          <label htmlFor="image">Image: </label>
-          <input htmlFor="image" type="file" name="image" />
-        </div> */}
+        <div>
+          <button type="button" onClick={handleUploadImages}>
+            Upload Images
+          </button>
+          <div className="form-group images">
+            {uploadedImages.map((image, index) => (
+              <img
+                key={index}
+                src={image.url}
+                alt="dog"
+                style={{ width: 100, height: 100 }}
+              />
+            ))}
+          </div>
+        </div>
         <button type="submit" onClick={handleSubmit}>
           {dogId ? "Save Changes" : "Add Dog"}
         </button>
