@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { login } from "../../features/authSlice";
 import { Link } from "react-router-dom";
 import "./Login.scss";
+import { toast } from "react-toastify";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -22,13 +23,23 @@ function Login() {
       localStorage.setItem("userData", JSON.stringify(user));
 
       setAuthToken(token);
-      
+
       // Dispatch the login action
       dispatch(login({ user, token }));
 
       navigate("/");
     } catch (error) {
       console.error("Login failed:", error.response?.data || error.message);
+      toast.error("Login failed. Please try again.", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
