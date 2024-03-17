@@ -30,7 +30,7 @@ function DogDetails() {
 
   useEffect(() => {
     if (dog && dog.images && dog.images.length > 0) {
-      setExpandedImg(dog.images[0]);
+      setExpandedImg(dog.images[0].url);
     }
   }, [dog]);
 
@@ -126,13 +126,13 @@ function DogDetails() {
         </div>
       </div>
       <div className="dog-photos">
-        {dog.images.map((imageUrl, index) => (
+        {dog.images.map((image, index) => (
           <div
             className="column"
             key={index}
-            onClick={() => handleImageClick(imageUrl)}
+            onClick={() => handleImageClick(image.url)}
           >
-            <img src={imageUrl} alt={`${dog.name} ${index + 1}`} />
+            <img src={image.url} alt={`${dog.name} ${index + 1}`} />
           </div>
         ))}
       </div>
