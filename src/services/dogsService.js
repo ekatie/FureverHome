@@ -50,7 +50,6 @@ export const adminAddDog = async (dog) => {
 export const adminUpdateDog = async (id, dog) => {
   try {
     const response = await API.put(`/admin/dogs/${id}`, { dog });
-
     return response.data;
   } catch (error) {
     console.error("Failed to update the dog:", error);
