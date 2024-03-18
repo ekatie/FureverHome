@@ -29,8 +29,12 @@ function DogDetails() {
   }, [dogId, dispatch, dog]);
 
   useEffect(() => {
-    if (dog && dog.images && dog.images.length > 0) {
-      setExpandedImg(dog.images[0].url);
+    if (
+      dog &&
+      dog.dog_images_attributes &&
+      dog.dog_images_attributes.length > 0
+    ) {
+      setExpandedImg(dog.dog_images_attributes[0].url);
     }
   }, [dog]);
 
@@ -126,7 +130,7 @@ function DogDetails() {
         </div>
       </div>
       <div className="dog-photos">
-        {dog.images.map((image, index) => (
+        {dog.dog_images_attributes.map((image, index) => (
           <div
             className="column"
             key={index}
