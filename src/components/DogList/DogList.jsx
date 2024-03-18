@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchDogsAsync } from "../../features/dogSlice";
 import DogListItem from "../DogListItem/DogListItem";
 import "./DogList.scss";
+import { findDefaultImage } from "../../helpers/findDefaultImage";
 
 const DogList = ({ limit }) => {
   const dispatch = useDispatch();
@@ -33,7 +34,7 @@ const DogList = ({ limit }) => {
             key={dog.id}
             id={dog.id}
             name={dog.name}
-            imageUrl={dog.default_image_url}
+            imageUrl={findDefaultImage(dog)}
             isFavourite={dog.is_favourite}
           />
         ))}
