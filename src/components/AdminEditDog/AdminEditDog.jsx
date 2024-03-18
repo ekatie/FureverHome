@@ -48,7 +48,20 @@ const AdminEditDog = () => {
   // Update form fields when editing
   useEffect(() => {
     if (dogDetails) {
-      setDog(dogDetails);
+      console.log("dogDetails", dogDetails);
+      setDog((prevDog) => ({
+        ...prevDog,
+        ...dogDetails,
+        dog_images_attributes: dogDetails.dog_images_attributes || [],
+      }));
+      // Initialize uploadedImages with existing dog images
+      const existingImages =
+        dogDetails.dog_images_attributes?.map((image) => ({
+          url: image.url,
+          is_default: image.is_default,
+        })) || [];
+      setUploadedImages(existingImages);
+      console.log("existingImages", existingImages);
     }
   }, [dogDetails]);
 
@@ -102,9 +115,18 @@ const AdminEditDog = () => {
         if (result.event === "queues-end") {
           const newImages = result.info.files.map((file, index) => ({
             url: file.uploadInfo.secure_url,
-            is_default: uploadedImages.length === 0 && index === 0, // First image is default if no other images have been uploaded
+            is_default: false,
           }));
-          setUploadedImages((prev) => [...prev, ...newImages]);
+
+          setDog((prev) => ({
+            ...prev,
+            dog_images_attributes: [
+              ...prev.dog_images_attributes,
+              ...newImages,
+            ],
+          }));
+
+          // setUploadedImages((prev) => [...prev, ...newImages]);
           toast.success("Images uploaded successfully!", {
             position: "top-center",
             autoClose: 5000,
@@ -123,8 +145,16 @@ const AdminEditDog = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const {
+      id: omittedId,
+      is_favourite: ommittedStatus,
+      ...dogDataWithoutId
+    } = dog;
+
     const dogData = {
-      ...dog,
+      ...dogDataWithoutId,
+      age: parseFloat(dog.age),
+      adoption_fee: parseFloat(dog.adoption_fee),
       dog_images_attributes: uploadedImages.map((image) => ({
         url: image.url,
         is_default: image.is_default || false,
@@ -159,7 +189,7 @@ const AdminEditDog = () => {
           theme: "light",
         });
 
-        navigate("/admin/dogs");
+        // navigate("/admin/dogs");
       })
       .catch((error) => {
         // Error handling here
