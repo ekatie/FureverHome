@@ -49,7 +49,7 @@ export const addDogAsync = createAsyncThunk(
   "dogs/addDog",
   async ({ dog }) => {
     const response = await adminAddDog(dog);
-    return response.data;
+    return response;
   }
 );
 
@@ -60,6 +60,7 @@ export const updateDogAsync = createAsyncThunk(
     return response.data;
   }
 );
+
 const dogSlice = createSlice({
   name: "dogs",
   initialState: {
@@ -141,6 +142,11 @@ const dogSlice = createSlice({
       })
       .addCase(fetchAdminDogAsync.rejected, (state) => {
         state.status = "failed";
+      });
+    builder
+      .addCase(addDogAsync.fulfilled, (state, action) => {
+        state.dogs.push(action.payload);
+        console.log("Dog added successfully", action.payload);
       });
   }
 });
