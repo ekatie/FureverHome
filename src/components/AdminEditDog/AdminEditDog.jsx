@@ -20,6 +20,7 @@ const AdminEditDog = () => {
   );
 
   const [uploadedImages, setUploadedImages] = useState([]);
+  const [defaultImageId, setDefaultImageId] = useState(null);
   const [dog, setDog] = useState({
     name: "",
     breed: "",
@@ -48,20 +49,29 @@ const AdminEditDog = () => {
   // Update form fields when editing
   useEffect(() => {
     if (dogDetails) {
-      console.log("dogDetails", dogDetails);
       setDog((prevDog) => ({
         ...prevDog,
         ...dogDetails,
         dog_images_attributes: dogDetails.dog_images_attributes || [],
       }));
+
+      // Set default image id
+      const currentDefaultImage = dogDetails.dog_images_attributes?.find(
+        (image) => image.is_default
+      );
+      if (currentDefaultImage) {
+        setDefaultImageId(currentDefaultImage.id);
+      }
+
       // Initialize uploadedImages with existing dog images
       const existingImages =
         dogDetails.dog_images_attributes?.map((image) => ({
+          id: image.id,
           url: image.url,
           is_default: image.is_default,
+          _destroy: false,
         })) || [];
       setUploadedImages(existingImages);
-      console.log("existingImages", existingImages);
     }
   }, [dogDetails]);
 
@@ -87,6 +97,16 @@ const AdminEditDog = () => {
     };
   }, []);
 
+  const setDefaultImage = (imageId) => {
+    setDefaultImageId(imageId);
+    setUploadedImages((prev) =>
+      prev.map((image) => ({
+        ...image,
+        is_default: image.id === imageId,
+      }))
+    );
+  };
+
   const handleUploadImages = () => {
     window.cloudinary.openUploadWidget(
       {
@@ -98,7 +118,6 @@ const AdminEditDog = () => {
       },
       (error, result) => {
         if (error) {
-          console.error("Upload error: ", error);
           toast.error("Failed to upload images. Please try again.", {
             position: "top-center",
             autoClose: 5000,
@@ -114,10 +133,11 @@ const AdminEditDog = () => {
 
         if (result.event === "queues-end") {
           const newImages = result.info.files.map((file, index) => ({
+            id: `temp-${Date.now()}-${index}`, // Temporary ID
             url: file.uploadInfo.secure_url,
             is_default: false,
           }));
-
+          console.log("newImages", newImages);
           setDog((prev) => ({
             ...prev,
             dog_images_attributes: [
@@ -125,8 +145,7 @@ const AdminEditDog = () => {
               ...newImages,
             ],
           }));
-
-          // setUploadedImages((prev) => [...prev, ...newImages]);
+          setUploadedImages((prev) => [...prev, ...newImages]);
           toast.success("Images uploaded successfully!", {
             position: "top-center",
             autoClose: 5000,
@@ -155,10 +174,16 @@ const AdminEditDog = () => {
       ...dogDataWithoutId,
       age: parseFloat(dog.age),
       adoption_fee: parseFloat(dog.adoption_fee),
-      dog_images_attributes: uploadedImages.map((image) => ({
-        url: image.url,
-        is_default: image.is_default || false,
-      })),
+      dog_images_attributes: uploadedImages.map((image) => {
+        // Check if `id` is a string and starts with "temp-"; otherwise, include it as is
+        const shouldOmitId =
+          typeof image.id === "string" && image.id.startsWith("temp-");
+        return {
+          url: image.url,
+          is_default: image.id === defaultImageId,
+          ...(shouldOmitId ? {} : { id: image.id }),
+        };
+      }),
     };
 
     console.log("dogData", dogData);
@@ -169,10 +194,9 @@ const AdminEditDog = () => {
       actionResult = dispatch(updateDogAsync({ id: dogId, dog: dogData }));
     } else {
       // Add new dog
-      console.log("adding dog", dogData);
       actionResult = dispatch(addDogAsync({ dog: dogData }));
     }
-
+    console.log("actionResult", actionResult);
     actionResult
       .then(() => {
         const toastMessage = dogId
@@ -189,10 +213,11 @@ const AdminEditDog = () => {
           theme: "light",
         });
 
-        // navigate("/admin/dogs");
+        navigate("/admin/dogs");
       })
       .catch((error) => {
         // Error handling here
+        console.log("error", error);
         toast.error("Failed to save changes. Please try again.", {
           position: "top-center",
           autoClose: 5000,
@@ -209,7 +234,10 @@ const AdminEditDog = () => {
   return (
     <section className="admin-edit-dog">
       <div className="page-header">
-        <ArrowBackIcon className="back-icon" onClick={() => navigate(-1)} />
+        <ArrowBackIcon
+          className="back-icon"
+          onClick={() => navigate("/admin/dogs")}
+        />
         <h1 className="page-title">{dogId ? "Edit Dog" : "Add New Dog"}</h1>
       </div>
       <form onSubmit={handleSubmit}>
@@ -495,17 +523,30 @@ const AdminEditDog = () => {
           />
         </div>
         <div>
-          <button type="button" onClick={handleUploadImages}>
-            Upload Images
-          </button>
+          <div className="form-group">
+            <button
+              className="image-upload-btn"
+              type="button"
+              onClick={handleUploadImages}
+            >
+              Upload Images
+            </button>
+            {uploadedImages.length > 0 && !defaultImageId && (
+              <p className="default-prompt">Please select a default image:</p>
+            )}
+          </div>
           <div className="form-group images">
             {uploadedImages.map((image, index) => (
-              <img
+              <div
                 key={index}
-                src={image.url}
-                alt="dog"
-                style={{ width: 100, height: 100 }}
-              />
+                className={`image-item ${image.is_default ? "default" : ""}`}
+                onClick={() => setDefaultImage(image.id)}
+              >
+                <img src={image.url} alt={`Dog ${index + 1}`} />
+                {image.is_default && (
+                  <div className="default-badge">Default</div>
+                )}
+              </div>
             ))}
           </div>
         </div>
