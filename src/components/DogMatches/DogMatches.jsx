@@ -6,6 +6,7 @@ import { confirmMatchAsync } from "../../features/applicationSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
+import { findDefaultImage } from "../../helpers/findDefaultImage";
 
 const DogMatches = ({
   matches,
@@ -88,7 +89,7 @@ const DogMatches = ({
             key={dog.id}
             onClick={() => handleSelectDog(dog.id)}
           >
-            <img src={dog.default_image_url} alt={dog.name} />
+            <img src={findDefaultImage(dog)} alt={dog.name} />
             <div className="dog-info">
               <h3>{dog.name}</h3>
               {dog.is_favourite && <FavIcon selected={dog.is_favourite} />}
