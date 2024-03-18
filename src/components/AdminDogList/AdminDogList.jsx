@@ -33,7 +33,7 @@ const AdminDogList = () => {
   return (
     <section className="admin-list">
       <div className="page-header">
-        <ArrowBackIcon className="back-icon" onClick={() => navigate(-1)} />
+        <ArrowBackIcon className="back-icon" onClick={() => navigate('/admin/dashboard')} />
         <h1 className="page-title">Current Dogs</h1>
         <button className="add-btn" onClick={() => navigate("/admin/dogs/new")}>
           Add Dog
