@@ -12,6 +12,7 @@ import { faDog } from "@fortawesome/free-solid-svg-icons";
 import GaugeMeter from "./GaugeMeter";
 import { useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { findDefaultImage } from "../../helpers/findDefaultImage";
 
 function DogDetails() {
   const { id: dogId } = useParams();
@@ -34,7 +35,7 @@ function DogDetails() {
       dog.dog_images_attributes &&
       dog.dog_images_attributes.length > 0
     ) {
-      setExpandedImg(dog.dog_images_attributes[0].url);
+      setExpandedImg(findDefaultImage(dog));
     }
   }, [dog]);
 
@@ -97,11 +98,11 @@ function DogDetails() {
             {dog.size} lbs
           </p>
           <p className="detail-label">Energy Level: </p>
-          <p className="detail-text">
+          <div className="detail-text">
             <div className="dog-energy-level">
               <GaugeMeter level={dog.energy_level} />
             </div>
-          </p>
+          </div>
           <p className="detail-label">Social Media: </p>
           <a href={dog.social_media_link} className="social-link">
             <InstagramIcon />
