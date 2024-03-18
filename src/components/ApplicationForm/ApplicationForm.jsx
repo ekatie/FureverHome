@@ -806,13 +806,11 @@ function ApplicationForm() {
           onMatchConfirmed={onMatchConfirmed}
         />
       )}
-      {applicationStatus === "Submitted" && (
-        <p>
-          <span className="label-text">Application Status:</span> Your
-          application has been submitted and is pending review. Please check
-          back in a few days for an update.
-        </p>
-      )}
+      <p>
+        <span className="label-text">Application Status:</span>{" "}
+        {applicationStatus}.
+        <p>Please check back in a few days for an update.</p>
+      </p>
     </main>
   );
 }
