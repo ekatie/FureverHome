@@ -92,7 +92,10 @@ const AdminApplicationDetails = () => {
   return (
     <section className="application-details">
       <div className="page-header">
-        <ArrowBackIcon className="back-icon" onClick={() => navigate(-1)} />
+        <ArrowBackIcon
+          className="back-icon"
+          onClick={() => navigate("/admin/applications")}
+        />
         <h1 className="page-title">Application Details</h1>
       </div>
       <div className="application">
