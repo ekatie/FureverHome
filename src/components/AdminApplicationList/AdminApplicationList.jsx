@@ -28,7 +28,7 @@ const AdminApplicationList = () => {
   return (
     <section className="admin-list">
       <div className="page-header">
-        <ArrowBackIcon className="back-icon" onClick={() => navigate(-1)} />
+        <ArrowBackIcon className="back-icon" onClick={() => navigate('/admin/dashboard')} />
         <h1 className="page-title">Admin Application List</h1>
       </div>
       <table className="admin-table">
