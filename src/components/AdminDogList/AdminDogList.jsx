@@ -6,6 +6,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import "./AdminDogList.scss";
 import { useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { findDefaultImage } from "../../helpers/findDefaultImage";
 
 const AdminDogList = () => {
   const dispatch = useDispatch();
@@ -53,7 +54,7 @@ const AdminDogList = () => {
             <tr key={dog.id} className="admin-row">
               <td>
                 <img
-                  src={dog.default_image_url}
+                  src={findDefaultImage(dog)}
                   alt={dog.name}
                   className="list-image"
                 />
