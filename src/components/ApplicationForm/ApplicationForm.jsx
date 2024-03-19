@@ -806,11 +806,18 @@ function ApplicationForm() {
           onMatchConfirmed={onMatchConfirmed}
         />
       )}
-      <p>
-        <span className="label-text">Application Status:</span>{" "}
-        {applicationStatus}.
-        <p>Please check back in a few days for an update.</p>
-      </p>
+      {applicationStatus !== "Not Started" ||
+        applicationStatus !== "Pending" ||
+        (applicationStatus !== "Pending Dog Selection" && (
+          <div>
+            <p>
+              <span className="label-text">Application Status:</span>{" "}
+              {applicationStatus}.
+              <p>Please check back in a few days for an update.</p>
+            </p>
+            <button>Cancel Application</button>
+          </div>
+        ))}
     </main>
   );
 }
