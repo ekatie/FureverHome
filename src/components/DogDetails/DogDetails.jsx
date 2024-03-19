@@ -6,13 +6,14 @@ import FemaleIcon from "@mui/icons-material/Female";
 import MaleIcon from "@mui/icons-material/Male";
 import "./DogDetails.scss";
 import InstagramIcon from "@mui/icons-material/Instagram";
-import FavIcon from "../FavIcon/FavIcon";
+import FavButton from "../FavButton/FavButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDog } from "@fortawesome/free-solid-svg-icons";
 import GaugeMeter from "./GaugeMeter";
 import { useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { findDefaultImage } from "../../helpers/findDefaultImage";
+import { toast } from "react-toastify";
 
 function DogDetails() {
   const { id: dogId } = useParams();
@@ -22,6 +23,7 @@ function DogDetails() {
     state.dogs.dogs.find((dog) => dog.id.toString() === dogId)
   );
   const [expandedImg, setExpandedImg] = useState("");
+  const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
     if (!dog && dogId) {
@@ -58,13 +60,38 @@ function DogDetails() {
 
   const dogSizeCategory = getSizeCategory(dog.size);
 
+  const handleClickApply = () => {
+    if (!user) {
+      // If user is not logged in, display a toast message
+      toast.warn("You must be logged in to apply for adoption.", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else {
+      // If user is logged in, redirect to the application form
+      navigate(`/application`);
+    }
+  };
+
   return (
     <article className="dog-details">
       <div className="page-header">
-        <ArrowBackIcon className="back-icon" onClick={() => navigate(-1)} />
-        <h1 className="page-title">
-          {dog.name} <FavIcon selected={dog.is_favourite} />
-        </h1>
+        <div className="header-flex-container">
+          <ArrowBackIcon className="back-icon" onClick={() => navigate(-1)} />
+          <div className="title-fav-container">
+            <h1 className="page-title">{dog.name}</h1>
+            <FavButton isFavourite={dog.is_favourite} dogId={dog.id} />
+          </div>
+          <button className="apply-button" onClick={() => handleClickApply()}>
+            Apply
+          </button>
+        </div>
       </div>
 
       <div className="top-section">
