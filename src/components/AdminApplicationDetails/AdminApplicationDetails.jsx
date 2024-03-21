@@ -18,6 +18,7 @@ const AdminApplicationDetails = () => {
   const application = useSelector((state) => state.application.application);
   const [editMode, setEditMode] = useState(false);
   const [newStatus, setNewStatus] = useState(application.status);
+  const applicationStatus = useSelector((state) => state.application.status);
 
   const statusOptions = [
     "Submitted",
@@ -76,7 +77,7 @@ const AdminApplicationDetails = () => {
 
   useEffect(() => {
     dispatch(fetchAdminApplicationAsync(applicationId));
-  }, [dispatch, applicationId]);
+  }, [dispatch, applicationId, applicationStatus]);
 
   if (!application || !application.user) {
     return <div>Loading...</div>;
