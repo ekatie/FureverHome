@@ -18,7 +18,7 @@ function Home() {
           </Link>
         </div>
       </div>
-      <DogList limit={6} />
+      <DogList limit={6} isHomePage={true} />
       <Link to="/dogs" className="lower-nav-link">
         View all dogs
       </Link>
