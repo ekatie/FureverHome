@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getAdminApplications, getAdminApplication, adminUpdateApplication } from "../services/applicationsService";
+import { getAdminApplications, getAdminApplication, adminUpdateApplication, createBooking } from "../services/applicationsService";
 import API from "../services/api";
 
 export const addApplicationAsync = createAsyncThunk(
@@ -65,6 +65,18 @@ export const confirmMatchAsync = createAsyncThunk(
       return response.data;
     } catch (error) {
       console.error("Confirm Match Error:", error.response || error);
+      throw error;
+    }
+  }
+);
+
+export const createBookingAsync = createAsyncThunk(
+  "application/createBooking",
+  async ({ applicationId, uri }) => {
+    try {
+      const response = await createBooking(applicationId, uri);
+      return response;
+    } catch (error) {
       throw error;
     }
   }
@@ -199,6 +211,15 @@ const applicationSlice = createSlice({
         state.application = action.payload;
       })
       .addCase(fetchAdminApplicationAsync.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      });
+    builder
+      .addCase(createBookingAsync.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.booking = action.payload;
+      })
+      .addCase(createBookingAsync.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
       });
