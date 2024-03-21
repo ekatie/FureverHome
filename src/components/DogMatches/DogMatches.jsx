@@ -13,6 +13,7 @@ const DogMatches = ({
   onSelectDog,
   applicationId,
   onMatchConfirmed,
+  onCancelApplication,
 }) => {
   const [selectedDogId, setSelectedDogId] = useState(null);
   const [hasReadProfile, setHasReadProfile] = useState(false);
@@ -125,9 +126,14 @@ const DogMatches = ({
           </div>
         </div>
       )}
-      <button className="application-btn" onClick={confirmMatch}>
-        Confirm Match
-      </button>
+      <div className="match-buttons">
+        <button className="application-btn" onClick={confirmMatch}>
+          Confirm Match
+        </button>
+        <button className="cancel-btn" onClick={onCancelApplication}>
+          Cancel
+        </button>
+      </div>
     </section>
   );
 };
