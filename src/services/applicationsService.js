@@ -27,9 +27,9 @@ export const adminUpdateApplication = async (id, status) => {
   }
 };
 
-export const createBooking = async (applicationId, eventUri) => {
+export const createBooking = async (applicationId, uri) => {
   try {
-    const response = await API.patch(`/applications/${applicationId}/booking`, { event_uri: eventUri });
+    const response = await API.patch(`/applications/${applicationId}/booking`, { event_uri: uri });
     return response.data;
   } catch (error) {
     throw error;
