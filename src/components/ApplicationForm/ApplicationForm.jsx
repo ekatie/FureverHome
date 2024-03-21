@@ -6,11 +6,13 @@ import {
   fetchApplicationAsync,
   addApplicationAsync,
   fetchMatchesAsync,
+  cancelApplicationAsync,
 } from "../../features/applicationSlice";
 import { toast } from "react-toastify";
 import { unwrapResult } from "@reduxjs/toolkit";
 import DogMatches from "../DogMatches/DogMatches";
 import { useNavigate } from "react-router-dom";
+import Calendar from "../Calendar/Calendar";
 
 function ApplicationForm() {
   const [formState, setFormState] = useState({
@@ -168,6 +170,91 @@ function ApplicationForm() {
     }
   };
 
+  const handleCancelApplication = () => {
+    dispatch(cancelApplicationAsync({ applicationId: applicationState.id }))
+      .then(unwrapResult)
+      .then(() => {
+        toast.success("Your application has been cancelled.", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        navigate("/application");
+      })
+      .catch((error) => {
+        toast.error("There was an error cancelling your application.", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        console.error("Error cancelling application:", error);
+      });
+  };
+
+  function getAppointmentType(status) {
+    switch (status) {
+      case "Pending Interview Booking":
+      case "Interview Booked":
+        return "interview";
+      case "Pending Meet and Greet Booking":
+      case "Meet and Greet Booked":
+        return "meet and greet";
+      case "Pending Adoption Date Booking":
+      case "Adoption Date Booked":
+        return "adoption date";
+      default:
+        return "";
+    }
+  }
+
+  function getAppointmentDate(status, application) {
+    let dateStr = "";
+    switch (status) {
+      case "Interview Booked":
+        dateStr = application.interview_date;
+        break;
+      case "Meet and Greet Booked":
+        dateStr = application.meet_greet_date;
+        break;
+      case "Adoption Date Booked":
+        dateStr = application.adoption_date;
+        break;
+      default:
+        return "";
+    }
+
+    if (!dateStr) {
+      return "";
+    }
+
+    const date = new Date(dateStr);
+    if (isNaN(date.getTime())) {
+      return "Invalid date";
+    }
+
+    return `${date.toLocaleDateString(undefined, {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    })} at ${date.toLocaleTimeString(undefined, {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    })}`;
+  }
+
+  const formattedDate = getAppointmentDate(applicationStatus, applicationState);
+
   return (
     <main className="application-form">
       <h1 className="page-title">Adoption Application</h1>
@@ -203,7 +290,7 @@ function ApplicationForm() {
                   value={formState.streetAddress}
                   onChange={handleChange}
                 />
-                <br />
+
                 <label htmlFor="city">City</label>
                 <input
                   htmlFor="city"
@@ -212,7 +299,7 @@ function ApplicationForm() {
                   value={formState.city}
                   onChange={handleChange}
                 />
-                <br />
+
                 <label htmlFor="province">Province</label>
                 <select
                   htmlFor="province"
@@ -509,8 +596,8 @@ function ApplicationForm() {
             <div>
               <label htmlFor="adoption_details" className="part-b">
                 If yes, please provide information about the animal(s) you have
-                adopted, including the name of the shelter or rescue
-                organization, type of animal, and the outcome of the adoption.
+                adopted (shelter/rescue organization, type of animal, outcome,
+                etc.)
               </label>
               <input
                 htmlFor="adoption_details"
@@ -804,22 +891,89 @@ function ApplicationForm() {
           onSelectDog={handleSelectDog}
           applicationId={applicationState.id}
           onMatchConfirmed={onMatchConfirmed}
+          onCancelApplication={handleCancelApplication}
         />
       )}
-      {applicationStatus !== "Not Started" ||
-        applicationStatus !== "Pending" ||
-        (applicationStatus !== "Pending Dog Selection" && (
-          <div>
-            <p>
-              <span className="label-text">Application Status:</span>{" "}
-              {applicationStatus}.
-              <p>Please check back in a few days for an update.</p>
-            </p>
-            <button>Cancel Application</button>
-          </div>
-        ))}
+      {(applicationStatus === "Submitted" ||
+        applicationStatus === "Under Review") && (
+        <div>
+          <p>
+            <span className="label-text">Application Status:</span>{" "}
+            {applicationStatus}.
+            <p>Please check back in a few days for an update.</p>
+          </p>
+          <button className="cancel-btn" onClick={handleCancelApplication}>
+            Cancel Application
+          </button>
+        </div>
+      )}
+      {(applicationStatus === "Pending Interview Booking" ||
+        applicationStatus === "Pending Meet and Greet Booking" ||
+        applicationStatus === "Pending Adoption Date Booking") && (
+        <div className="booking-page">
+          <p>
+            Please book an appointment for your{" "}
+            {getAppointmentType(applicationStatus)} below:
+          </p>
+          <Calendar
+            applicationId={applicationState.id}
+            applicationStatus={applicationStatus}
+          />
+          <button className="cancel-btn" onClick={handleCancelApplication}>
+            Cancel Application
+          </button>
+        </div>
+      )}
+      {(applicationStatus === "Interview Booked" ||
+        applicationStatus === "Meet and Greet Booked" ||
+        applicationStatus === "Adoption Date Booked") && (
+        <div>
+          <p>
+            <span className="label-text">Application Status:</span>{" "}
+            {applicationStatus}.
+          </p>
+          <p>
+            <span className="label-text">
+              {`${getAppointmentType(applicationStatus).charAt(0).toUpperCase()}${getAppointmentType(applicationStatus).slice(1).toLowerCase()}`}{" "}
+              Appointment:{" "}
+            </span>
+            {formattedDate}
+          </p>
+          <button className="cancel-btn" onClick={handleCancelApplication}>
+            Cancel Application
+          </button>
+        </div>
+      )}
+      {applicationStatus === "Cancelled" && (
+        <div>
+          <p>Your application has been cancelled!</p>
+          <br />
+        </div>
+      )}
     </main>
   );
 }
 
 export default ApplicationForm;
+
+// 'Not Started',
+// 'Pending',
+// 'Pending Dog Selection',
+// 'Submitted',
+// 'Under Review',
+
+// 'Pending Interview Booking',
+// 'Pending Meet and Greet Booking',
+// 'Pending Adoption Date Booking',
+
+// 'Interview Booked',
+// 'Meet and Greet Booked',
+// 'Adoption Date Booked',
+
+// 'Awaiting Payment',
+// 'Payment Received',
+// 'Awaiting Contract Signature',
+// 'Adoption Complete',
+// 'Approved',
+// 'Rejected',
+// 'Cancelled'
