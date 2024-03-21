@@ -137,7 +137,6 @@ const AdminEditDog = () => {
             url: file.uploadInfo.secure_url,
             is_default: false,
           }));
-          console.log("newImages", newImages);
           setDog((prev) => ({
             ...prev,
             dog_images_attributes: [
@@ -186,8 +185,6 @@ const AdminEditDog = () => {
       }),
     };
 
-    console.log("dogData", dogData);
-
     let actionResult;
     if (dogId) {
       // Update dog
@@ -196,7 +193,7 @@ const AdminEditDog = () => {
       // Add new dog
       actionResult = dispatch(addDogAsync({ dog: dogData }));
     }
-    console.log("actionResult", actionResult);
+
     actionResult
       .then(() => {
         const toastMessage = dogId
@@ -217,7 +214,6 @@ const AdminEditDog = () => {
       })
       .catch((error) => {
         // Error handling here
-        console.log("error", error);
         toast.error("Failed to save changes. Please try again.", {
           position: "top-center",
           autoClose: 5000,
