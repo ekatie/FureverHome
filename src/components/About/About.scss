@@ -1,3 +1,45 @@
+.about-page {
+  display: flex;
+  height: 100vh;
+}
+
+.about-katie {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  
+  .image-container {
+    flex: 1;
+    img {
+      height: 100vh; 
+      width: auto;
+      object-fit: cover;
+    }
+  }
+
+  .content {
+    flex: 2; // Take 2/3 of the space
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: center; 
+    margin-top: 15px;
+
+    .name {
+      font-size: 3em;
+      margin-bottom: 10px;
+      font-family: "Ink Free", cursive;
+      font-weight: 700;
+    }
+
+    svg {
+      width: 50px;
+      margin: 10px; 
+    }
+  }
+}
+
 .main-content {
   width: 100%;
   display: flex;
