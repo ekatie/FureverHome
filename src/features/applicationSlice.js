@@ -58,9 +58,27 @@ export const confirmMatchAsync = createAsyncThunk(
   async ({ applicationId, dogId, readProfile }) => {
     try {
       const response = await API.put(`/applications/${applicationId}`, { application: { dog_id: dogId, status: "Submitted", read_profile: readProfile } });
+
+      // Update dog status to "Applications Being Reviewed"
+      await API.put(`/dogs/${dogId}`, { dog: { status: "Applications Being Reviewed" } });
+
       return response.data;
     } catch (error) {
       console.error("Confirm Match Error:", error.response || error);
+      throw error;
+    }
+  }
+);
+
+export const cancelApplicationAsync = createAsyncThunk(
+  "application/cancelApplication",
+  async ({ applicationId }) => {
+    try {
+      const response = await API.put(`/applications/${applicationId}/cancel`, { application: { status: "Cancelled" } });
+
+      return response.data;
+    } catch (error) {
+      console.error("Cancel Application Error:", error.response || error);
       throw error;
     }
   }
