@@ -224,9 +224,13 @@ const AdminApplicationDetails = () => {
               Felony or Animal Cruelty Conviction?
             </p>
             <p>
-              {application.felony_conviction
-                ? "Yes" && <FlagIcon className="red-flag" />
-                : "No"}
+              {application.felony_conviction ? (
+                <>
+                  Yes <FlagIcon className="red-flag" />
+                </>
+              ) : (
+                "No"
+              )}
             </p>
           </div>
           {application.felony_conviction && (
@@ -241,9 +245,13 @@ const AdminApplicationDetails = () => {
           <div className="info-row">
             <p className="details-label">Prohibited from Animal Ownership?</p>
             <p>
-              {application.pet_prohibition
-                ? "Yes" && <FlagIcon className="red-flag" />
-                : "No"}
+              {application.pet_prohibition ? (
+                <>
+                  Yes <FlagIcon className="red-flag" />
+                </>
+              ) : (
+                "No"
+              )}
             </p>
           </div>
           {application.pet_prohibition && (
@@ -258,9 +266,13 @@ const AdminApplicationDetails = () => {
           <div className="info-row">
             <p className="details-label">Household Allergies?</p>
             <p>
-              {application.household_allergies
-                ? "Yes" && <FlagIcon className="red-flag" />
-                : "No"}
+              {application.household_allergies ? (
+                <>
+                  Yes <FlagIcon className="red-flag" />
+                </>
+              ) : (
+                "No"
+              )}
             </p>
           </div>
           <div className="info-row">
@@ -268,9 +280,13 @@ const AdminApplicationDetails = () => {
               Household Members Agree to Adoption?
             </p>
             <p>
-              {application.household_agreement
-                ? "Yes"
-                : "No" && <FlagIcon className="red-flag" />}
+              {application.household_agreement ? (
+                "Yes"
+              ) : (
+                <>
+                  No <FlagIcon className="red-flag" />
+                </>
+              )}
             </p>
           </div>
           <div className="info-row">
