@@ -8,6 +8,14 @@
   padding: 0;
 }
 
+.adoptables {
+  max-width: 90%;
+  font-size: 1.1em;
+  text-align: center;
+  margin: 0 auto;
+  margin-bottom: 25px;
+}
+
 /* Media query for smaller screens */
   @media (max-width: 1200px) {
     .dog-list-item {
