@@ -1,26 +1,52 @@
 import React from "react";
 import { InlineWidget, useCalendlyEventListener } from "react-calendly";
-import { createBooking } from "../../services/applicationsService";
+import { createBookingAsync } from "../../features/applicationSlice";
 import "./Calendar.scss";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
-const Calendar = ({ applicationId }) => {
+const Calendar = ({ applicationId, onBookingComplete }) => {
   const calendlyUrl =
     "https://calendly.com/furever-home/booking?hide_gdpr_banner=1";
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useCalendlyEventListener({
     onEventScheduled: async (e) => {
       const uri = e.data.payload.event.uri;
-
-      createBooking(applicationId, uri)
-        .then((details) => {
-          console.log("Fetched event details successfully:", details);
-          navigate("/application");
+      dispatch(createBookingAsync({ applicationId, uri }))
+        .then((action) => {
+          if (action.type === "application/createBooking/fulfilled") {
+            toast.success("Your appointment has been booked!", {
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+            onBookingComplete();
+            navigate("/application", {
+              replace: true,
+              state: { forceRefresh: true },
+            });
+          }
         })
         .catch((error) => {
-          console.error("Failed to fetch event details:", error);
+          toast.error("There was an error booking your appointment.", {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
         });
     },
   });
