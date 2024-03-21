@@ -146,7 +146,6 @@ const dogSlice = createSlice({
     builder
       .addCase(addDogAsync.fulfilled, (state, action) => {
         state.dogs.push(action.payload);
-        console.log("Dog added successfully", action.payload);
       });
   }
 });
