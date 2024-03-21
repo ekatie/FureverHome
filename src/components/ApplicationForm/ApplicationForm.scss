@@ -138,5 +138,40 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    p {
+      margin-bottom: 0;
+    }
+  }
+
+  .application-status-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    p {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .label-text {
+        margin-bottom: 10px;
+        font-size: 1.2em;
+        color: #000;
+      }
+
+      p {
+        margin-bottom: 0;
+        font-style: italic;
+      }
+    }
+
+    img {
+      width: 90%;
+      margin-bottom: 15px;
+      object-fit: cover;
+      border-radius: 10px;
+      max-height: 350px;
+    }
   }
 }

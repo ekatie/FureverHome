@@ -54,6 +54,7 @@ function ApplicationForm() {
     (state) => state.application.application
   );
   const applicationStatus = applicationState?.status || "Not Started";
+  console.log("status:", applicationState?.status);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -68,7 +69,7 @@ function ApplicationForm() {
     if (user?.id) {
       dispatch(fetchApplicationAsync(user.id));
     }
-  }, [dispatch, user?.id]);
+  }, [dispatch, user?.id, applicationState?.status]);
 
   const handleChange = (e) => {
     const { name, value, type } = e.target;
@@ -205,13 +206,13 @@ function ApplicationForm() {
     switch (status) {
       case "Pending Interview Booking":
       case "Interview Booked":
-        return "interview";
+        return "Interview";
       case "Pending Meet and Greet Booking":
       case "Meet and Greet Booked":
-        return "meet and greet";
+        return "Meet and Greet";
       case "Pending Adoption Date Booking":
       case "Adoption Date Booked":
-        return "adoption date";
+        return "Adoption Date";
       default:
         return "";
     }
@@ -896,12 +897,16 @@ function ApplicationForm() {
       )}
       {(applicationStatus === "Submitted" ||
         applicationStatus === "Under Review") && (
-        <div>
+        <div className="application-status-page">
           <p>
             <span className="label-text">Application Status:</span>{" "}
-            {applicationStatus}.
+            {applicationStatus}
             <p>Please check back in a few days for an update.</p>
           </p>
+          <img
+            src="https://ekatie.github.io/FureverHome/src/assets/running_4.png"
+            alt="dog-running"
+          />
           <button className="cancel-btn" onClick={handleCancelApplication}>
             Cancel Application
           </button>
@@ -917,7 +922,7 @@ function ApplicationForm() {
           </p>
           <Calendar
             applicationId={applicationState.id}
-            applicationStatus={applicationStatus}
+            onBookingComplete={() => dispatch(fetchApplicationAsync(user.id))}
           />
           <button className="cancel-btn" onClick={handleCancelApplication}>
             Cancel Application
@@ -927,18 +932,21 @@ function ApplicationForm() {
       {(applicationStatus === "Interview Booked" ||
         applicationStatus === "Meet and Greet Booked" ||
         applicationStatus === "Adoption Date Booked") && (
-        <div>
+        <div className="application-status-page">
           <p>
             <span className="label-text">Application Status:</span>{" "}
-            {applicationStatus}.
+            {applicationStatus}
           </p>
           <p>
             <span className="label-text">
-              {`${getAppointmentType(applicationStatus).charAt(0).toUpperCase()}${getAppointmentType(applicationStatus).slice(1).toLowerCase()}`}{" "}
-              Appointment:{" "}
+              {getAppointmentType(applicationStatus)} Appointment:{" "}
             </span>
             {formattedDate}
           </p>
+          <img
+            src="https://github.com/ekatie/FureverHome/blob/main/src/assets/running_3.png?raw=true"
+            alt="dog-running"
+          />
           <button className="cancel-btn" onClick={handleCancelApplication}>
             Cancel Application
           </button>
