@@ -15,8 +15,8 @@ export const addApplicationAsync = createAsyncThunk(
   }
 );
 
-export const submitApplicationAsync = createAsyncThunk(
-  "application/submitApplication",
+export const updateApplicationAsync = createAsyncThunk(
+  "application/updateApplication",
   async (applicationData, { getState }) => {
     const { id, ...updatePayload } = applicationData;
     try {
@@ -78,6 +78,23 @@ export const createBookingAsync = createAsyncThunk(
       return response;
     } catch (error) {
       throw error;
+    }
+  }
+);
+
+export const createPaymentIntentAsync = createAsyncThunk(
+  "application/createPaymentIntent",
+  async ({ applicationId }, { rejectWithValue }) => {
+    try {
+      const response = await API.post(`/applications/${applicationId}/payment`);
+      if (response.data.clientSecret) {
+        return { clientSecret: response.data.clientSecret };
+      } else {
+        return rejectWithValue('Client secret not found in the response');
+      }
+    } catch (error) {
+      console.error("Create Payment Intent Error:", error.response?.data || error.message);
+      return rejectWithValue(error.response?.data || 'Unexpected error occurred');
     }
   }
 );
@@ -152,14 +169,14 @@ const applicationSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(submitApplicationAsync.pending, (state) => {
+      .addCase(updateApplicationAsync.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(submitApplicationAsync.fulfilled, (state, action) => {
+      .addCase(updateApplicationAsync.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.application = action.payload;
       })
-      .addCase(submitApplicationAsync.rejected, (state, action) => {
+      .addCase(updateApplicationAsync.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
       });
