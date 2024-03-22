@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./ApplicationForm.scss";
 import {
-  submitApplicationAsync,
+  updateApplicationAsync,
   fetchApplicationAsync,
   addApplicationAsync,
   fetchMatchesAsync,
@@ -13,6 +13,7 @@ import { unwrapResult } from "@reduxjs/toolkit";
 import DogMatches from "../DogMatches/DogMatches";
 import { useNavigate } from "react-router-dom";
 import Calendar from "../Calendar/Calendar";
+import StripeContainer from "../StripeContainer/StripeContainer";
 
 function ApplicationForm() {
   const [formState, setFormState] = useState({
@@ -54,7 +55,6 @@ function ApplicationForm() {
     (state) => state.application.application
   );
   const applicationStatus = applicationState?.status || "Not Started";
-  console.log("status:", applicationState?.status);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -120,7 +120,7 @@ function ApplicationForm() {
     delete submissionData.province;
 
     // Await the dispatch call and check the result
-    const actionResult = await dispatch(submitApplicationAsync(submissionData));
+    const actionResult = await dispatch(updateApplicationAsync(submissionData));
     const isSubmissionSuccessful = unwrapResult(actionResult);
 
     if (isSubmissionSuccessful) {
@@ -260,9 +260,15 @@ function ApplicationForm() {
     <main className="application-form">
       <h1 className="page-title">Adoption Application</h1>
       {applicationStatus === "Not Started" && (
-        <button className="application-btn" onClick={handleStartApplication}>
-          Start Application
-        </button>
+        <div className="application-status-page">
+          <img
+            src="https://github.com/ekatie/FureverHome/blob/main/src/assets/running_2.png?raw=true"
+            alt="running-dog"
+          />
+          <button className="application-btn" onClick={handleStartApplication}>
+            Start Application
+          </button>{" "}
+        </div>
       )}
       {applicationStatus === "Pending" && (
         <form onSubmit={handleSubmit}>
@@ -953,9 +959,26 @@ function ApplicationForm() {
         </div>
       )}
       {applicationStatus === "Cancelled" && (
-        <div>
+        <div className="application-status-page">
           <p>Your application has been cancelled!</p>
           <br />
+        </div>
+      )}
+      {applicationStatus === "Awaiting Payment" && (
+        <StripeContainer applicationId={applicationState.id} />
+      )}
+      {applicationStatus === "Payment Received" && (
+        <div className="application-status-page">
+          <p>
+            <span className="label-text">Application Status:</span>{" "}
+            {applicationStatus}
+          </p>
+          <img
+            src="https://github.com/ekatie/FureverHome/blob/main/src/assets/selfie_2.png?raw=true"
+            alt="dog-selfie"
+          />
+          <p>Make it super official by signing the Adoption Contract below:</p>
+          <button>Sign Contract</button>
         </div>
       )}
     </main>
