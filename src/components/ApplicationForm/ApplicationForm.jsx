@@ -989,7 +989,8 @@ function ApplicationForm() {
           <StripeContainer applicationId={applicationState.id} />
         </div>
       )}
-      {applicationStatus === "Payment Received" && (
+      {(applicationStatus === "Payment Received" ||
+        applicationStatus === "Awaiting Contract Signature") && (
         <div className="application-status-page">
           <p>
             <span className="label-text">Application Status:</span>{" "}
@@ -1017,6 +1018,7 @@ function ApplicationForm() {
             Congratulations on your new furry friend! We're so excited for you
             both!
           </p>
+          <br />
         </div>
       )}
     </main>
@@ -1024,27 +1026,3 @@ function ApplicationForm() {
 }
 
 export default ApplicationForm;
-
-// 'Not Started',
-// 'Pending',
-// 'Pending Dog Selection',
-// 'Submitted',
-// 'Under Review',
-
-// 'Pending Interview Booking',
-// 'Pending Meet and Greet Booking',
-// 'Pending Adoption Date Booking',
-
-// 'Interview Booked',
-// 'Meet and Greet Booked',
-// 'Adoption Date Booked',
-
-// 'Awaiting Payment',
-// 'Payment Received',
-// 'Awaiting Contract Signature',
-// :is_contract_signed, :is_fee_paid
-
-// 'Adoption Complete',
-// 'Approved',
-// 'Rejected',
-// 'Cancelled'
