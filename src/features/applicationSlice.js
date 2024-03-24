@@ -99,6 +99,40 @@ export const createPaymentIntentAsync = createAsyncThunk(
   }
 );
 
+export const fetchContractAsync = createAsyncThunk(
+  "application/fetchContract",
+  async (applicationId) => {
+    try {
+      const response = await API.get(`/applications/${applicationId}/generate_contract`, { responseType: 'blob' });
+
+      const fileURL = URL.createObjectURL(response.data);
+      return fileURL;
+    } catch (error) {
+      console.error("Fetch Contract Error:", error.response || error);
+      throw error;
+    }
+  }
+);
+
+export const uploadSignedContractAsync = createAsyncThunk(
+  "application/uploadSignedContract",
+  async ({ applicationId, signedPdfBlob }) => {
+    try {
+      const formData = new FormData();
+      formData.append("signed_contract", signedPdfBlob, `Signed_Dog_Adoption_Contract_${applicationId}.pdf`);
+      const response = await API.put(`/applications/${applicationId}/upload_signed_contract`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Upload Signed Contract Error:", error.response || error);
+      throw error;
+    }
+  }
+);
+
 export const cancelApplicationAsync = createAsyncThunk(
   "application/cancelApplication",
   async ({ applicationId }) => {
@@ -142,6 +176,8 @@ export const adminUpdateApplicationAsync = createAsyncThunk(
 const initialState = {
   application: {},
   applications: [],
+  contractUrl: null,
+  // noApplicationExists: true,
 };
 
 const applicationSlice = createSlice({
@@ -191,11 +227,16 @@ const applicationSlice = createSlice({
       .addCase(fetchApplicationAsync.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
+        // if (action.error.message.includes("Application not found")) {
+        //   state.application = {};
+        //   state.noApplicationExists = true;
+        // }
       });
     builder
       .addCase(addApplicationAsync.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.application = action.payload;
+        // state.noApplicationExists = false;
       })
       .addCase(addApplicationAsync.rejected, (state, action) => {
         state.status = "failed";
@@ -239,6 +280,10 @@ const applicationSlice = createSlice({
       .addCase(createBookingAsync.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
+      });
+    builder
+      .addCase(fetchContractAsync.fulfilled, (state, action) => {
+        state.contractUrl = action.payload;
       });
   }
 });
