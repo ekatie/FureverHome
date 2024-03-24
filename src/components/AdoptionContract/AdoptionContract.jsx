@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { PDFDocument } from "pdf-lib";
 import SignatureCapture from "../SignatureCapture/SignatureCapture";
 import {
-  fetchApplicationAsync,
   fetchContractAsync,
   uploadSignedContractAsync,
   updateApplicationAsync,
 } from "../../features/applicationSlice";
 import { toast } from "react-toastify";
+import "./AdoptionContract.scss";
 
 const AdoptionContract = () => {
   const dispatch = useDispatch();
@@ -17,12 +17,19 @@ const AdoptionContract = () => {
   const { applicationId } = useParams();
   const [signaturePad, setSignaturePad] = useState(null);
   const [signedPdfUrl, setSignedPdfUrl] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (applicationId) {
       dispatch(fetchContractAsync(applicationId));
     }
   }, [dispatch, applicationId]);
+
+  const clearSignature = () => {
+    if (signaturePad) {
+      signaturePad.clear();
+    }
+  };
 
   const signAndEmbedSignature = async () => {
     if (!contractUrl || !signaturePad) {
@@ -68,7 +75,7 @@ const AdoptionContract = () => {
         );
       })
       .then(() => {
-        dispatch(fetchApplicationAsync(applicationId));
+        navigate(`/application`);
       })
       .then(() => {
         toast.success("Your adoption contract has successfully been signed!", {
@@ -103,7 +110,7 @@ const AdoptionContract = () => {
   };
 
   return (
-    <div>
+    <section className="contract-page">
       <h1 className="page-title">Adoption Contract</h1>
       <p>
         Congratulations on your decision to adopt a furry friend! We're excited
@@ -116,7 +123,6 @@ const AdoptionContract = () => {
         help you every step of the way. Thank you for choosing adoption and
         giving a loving home to a pet in need.
       </p>
-      <h2>Adoption Contract</h2>
       {signedPdfUrl ? (
         <object
           data={signedPdfUrl}
@@ -134,14 +140,20 @@ const AdoptionContract = () => {
             height="600px"
             aria-label="Adoption Contract"
           />
+          <p>Please sign in the box below:</p>
           <SignatureCapture onReady={(pad) => setSignaturePad(pad)} />
-          <button onClick={signAndEmbedSignature}>Sign Document</button>
+          <div className="action-buttons">
+            <button onClick={signAndEmbedSignature}>Sign Document</button>
+            <button className="cancel-btn" onClick={clearSignature}>
+              Clear
+            </button>
+          </div>
         </>
       ) : (
         // Display loading state
         <p>Loading contract...</p>
       )}
-    </div>
+    </section>
   );
 };
 
