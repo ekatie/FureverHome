@@ -7,6 +7,7 @@ import {
 import { toast } from "react-toastify";
 import { updateApplicationAsync } from "../../features/applicationSlice";
 import { useDispatch } from "react-redux";
+import "./PaymentForm.scss";
 
 const PaymentForm = ({ applicationId }) => {
   const stripe = useStripe();
@@ -35,6 +36,7 @@ const PaymentForm = ({ applicationId }) => {
             updateApplicationAsync({
               id: applicationId,
               status: "Payment Received",
+              is_fee_paid: true,
             })
           );
           toast.success("Your payment was successful!", {
@@ -136,7 +138,7 @@ const PaymentForm = ({ applicationId }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="payment-form" onSubmit={handleSubmit}>
       <PaymentElement options={paymentElementOptions} />
       <button type="submit" disabled={isLoading || !stripe || !elements}>
         Pay Adoption Fee
