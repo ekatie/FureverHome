@@ -67,9 +67,13 @@ function ApplicationForm() {
 
   useEffect(() => {
     if (user?.id) {
-      dispatch(fetchApplicationAsync(user.id));
+      dispatch(fetchApplicationAsync(user.id))
+        .then(unwrapResult)
+        .catch((error) => {
+          console.error("Error fetching application:", error);
+        });
     }
-  }, [dispatch, user?.id, applicationState?.status]);
+  }, [dispatch, user?.id]);
 
   const handleChange = (e) => {
     const { name, value, type } = e.target;
@@ -169,6 +173,10 @@ function ApplicationForm() {
           console.error("Error fetching updated application:", error);
         });
     }
+  };
+
+  const handleSignContract = () => {
+    navigate(`/adoption-contract/${applicationState.id}`);
   };
 
   const handleCancelApplication = () => {
@@ -965,7 +973,21 @@ function ApplicationForm() {
         </div>
       )}
       {applicationStatus === "Awaiting Payment" && (
-        <StripeContainer applicationId={applicationState.id} />
+        <div className="application-status-page">
+          <p>
+            <span className="label-text">Application Status:</span>{" "}
+            {applicationStatus}
+          </p>
+          <p className="adoption-fee">
+            <span>Adoption Fee for {applicationState.dog.name}:</span> $
+            {Math.round(applicationState.dog.adoption_fee)} CAD
+          </p>
+          <p>
+            Are you in love yet? Make your match official by inputting your
+            payment details below:
+          </p>
+          <StripeContainer applicationId={applicationState.id} />
+        </div>
       )}
       {applicationStatus === "Payment Received" && (
         <div className="application-status-page">
@@ -977,8 +999,24 @@ function ApplicationForm() {
             src="https://github.com/ekatie/FureverHome/blob/main/src/assets/selfie_2.png?raw=true"
             alt="dog-selfie"
           />
-          <p>Make it super official by signing the Adoption Contract below:</p>
-          <button>Sign Contract</button>
+          <p>Make it super official by completing your Adoption Contract:</p>
+          <button onClick={() => handleSignContract()}>View Contract</button>
+        </div>
+      )}
+      {applicationStatus === "Adoption Complete" && (
+        <div className="application-status-page">
+          <p>
+            <span className="label-text">Application Status:</span>{" "}
+            {applicationStatus}
+          </p>
+          <img
+            src="https://img.freepik.com/free-photo/ai-generated-labrador-retriever-dog-picture_23-2150644908.jpg"
+            alt="dog-selfie"
+          />
+          <p>
+            Congratulations on your new furry friend! We're so excited for you
+            both!
+          </p>
         </div>
       )}
     </main>
@@ -1004,6 +1042,8 @@ export default ApplicationForm;
 // 'Awaiting Payment',
 // 'Payment Received',
 // 'Awaiting Contract Signature',
+// :is_contract_signed, :is_fee_paid
+
 // 'Adoption Complete',
 // 'Approved',
 // 'Rejected',
