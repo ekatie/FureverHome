@@ -86,7 +86,9 @@ const DogMatches = ({
       <ul>
         {sortedAndFilteredMatches.map((dog) => (
           <li
-            className={`dog-match-item ${dog.id === selectedDogId ? "selected" : ""}`}
+            className={`dog-match-item ${
+              dog.id === selectedDogId ? "selected" : ""
+            }`}
             key={dog.id}
             onClick={() => handleSelectDog(dog.id)}
           >
