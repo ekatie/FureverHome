@@ -13,6 +13,7 @@ import AdminApplicationList from './components/AdminApplicationList/AdminApplica
 import AdminDogList from './components/AdminDogList/AdminDogList';
 import AdminEditDog from './components/AdminEditDog/AdminEditDog';
 import AdminApplicationDetails from './components/AdminApplicationDetails/AdminApplicationDetails';
+import AdoptionContract from './components/AdoptionContract/AdoptionContract';
 
 const RoutesComponent = () => {
   return (
@@ -20,6 +21,7 @@ const RoutesComponent = () => {
       <Route exact path="/" element={<Home />} />
       <Route path="/about" element={<About />} />
       <Route path="/application" element={<ApplicationForm />} />
+      <Route path="/adoption-contract/:applicationId" element={<AdoptionContract />} />
       <Route path="/dogs/:id" element={<DogDetails />} />
       <Route path="/dogs" element={<DogList />} />
       <Route path="/login" element={<Login />} />
@@ -36,17 +38,3 @@ const RoutesComponent = () => {
 };
 
 export default RoutesComponent;
-
-// Dynamic Routing:
-// Use the services directory to manage API calls to your Rails backend. Components that correspond to routes can use these services to fetch or manipulate data.
-
-// Protected Routes:
-// For routes that require authentication (e.g., user profile, admin dashboard), consider implementing protected routes that check for user authentication status and redirect if necessary.
-
-// Link Components:
-// Use Link from react-router-dom to navigate your application without reloading the page, providing a smooth user experience.
-
-// React Router Best Practices
-// Lazy Loading: Use React.lazy for lazy loading components on routes. This improves the initial load time of your app.
-// 404 Page: Include a catch-all route to display a 404 page for unmatched routes.
-// Nested Routes: Utilize nested routes to reflect the hierarchy in your UI, making it easier to manage complex layouts.
