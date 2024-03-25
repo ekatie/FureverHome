@@ -112,7 +112,7 @@ const AdoptionContract = () => {
   return (
     <section className="contract-page">
       <h1 className="page-title">Adoption Contract</h1>
-      <p>
+      <p className="message">
         Congratulations on your decision to adopt a furry friend! We're excited
         to welcome you to the Furever Home family. Before you take your new
         companion home, we ask that you review and sign this adoption contract.
