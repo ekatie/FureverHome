@@ -269,8 +269,6 @@ function ApplicationForm() {
     dispatch(downloadContractAsync({ applicationId: applicationState.id }));
   };
 
-  console.log("applicationState", applicationState);
-
   return (
     <main className="application-form">
       <h1 className="page-title">Adoption Application</h1>
