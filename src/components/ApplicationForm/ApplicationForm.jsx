@@ -7,6 +7,7 @@ import {
   addApplicationAsync,
   fetchMatchesAsync,
   cancelApplicationAsync,
+  downloadContractAsync,
 } from "../../features/applicationSlice";
 import { toast } from "react-toastify";
 import { unwrapResult } from "@reduxjs/toolkit";
@@ -264,6 +265,12 @@ function ApplicationForm() {
 
   const formattedDate = getAppointmentDate(applicationStatus, applicationState);
 
+  const handleDownloadContract = () => {
+    dispatch(downloadContractAsync({ applicationId: applicationState.id }));
+  };
+
+  console.log("applicationState", applicationState);
+
   return (
     <main className="application-form">
       <h1 className="page-title">Adoption Application</h1>
@@ -421,7 +428,7 @@ function ApplicationForm() {
                 If yes, please list the type(s), breed(s), age(s), and other
                 relevant information about your current pet(s).
               </label>
-              <input
+              <textarea
                 htmlFor="current_pets_details"
                 type="text"
                 name="current_pets_details"
@@ -461,7 +468,7 @@ function ApplicationForm() {
                 If yes, please explain the circumstances and the outcome of the
                 conviction.
               </label>
-              <input
+              <textarea
                 htmlFor="felony_details"
                 type="text"
                 name="felony_details"
@@ -501,7 +508,7 @@ function ApplicationForm() {
                 If yes, please explain the circumstances and the outcome of the
                 prohibition.
               </label>
-              <input
+              <textarea
                 htmlFor="prohibition_details"
                 type="text"
                 name="prohibition_details"
@@ -614,7 +621,7 @@ function ApplicationForm() {
                 adopted (shelter/rescue organization, type of animal, outcome,
                 etc.)
               </label>
-              <input
+              <textarea
                 htmlFor="adoption_details"
                 type="text"
                 name="adoption_details"
@@ -626,7 +633,7 @@ function ApplicationForm() {
               <label htmlFor="adoption_reason">
                 2. Why have you decided to get a dog?
               </label>
-              <input
+              <textarea
                 htmlFor="adoption_reason"
                 type="text"
                 name="adoption_reason"
@@ -638,7 +645,7 @@ function ApplicationForm() {
               <label htmlFor="dog_experience">
                 3. What is your experience with dogs?
               </label>
-              <input
+              <textarea
                 htmlFor="dog_experience"
                 type="text"
                 name="dog_experience"
@@ -651,7 +658,7 @@ function ApplicationForm() {
                 4. How do you plan to exercise and provide mental stimulation
                 for the dog?
               </label>
-              <input
+              <textarea
                 htmlFor="stimulation_plan"
                 type="text"
                 name="stimulation_plan"
@@ -663,7 +670,7 @@ function ApplicationForm() {
               <label htmlFor="sleeping_arrangement">
                 5. Where will the dog sleep at night?
               </label>
-              <input
+              <textarea
                 htmlFor="sleeping_arrangement"
                 type="text"
                 name="sleeping_arrangement"
@@ -675,7 +682,7 @@ function ApplicationForm() {
               <label htmlFor="vet_frequency">
                 6. How often do you plan to take your dog to the vet?
               </label>
-              <input
+              <textarea
                 htmlFor="vet_frequency"
                 type="text"
                 name="vet_frequency"
@@ -1018,7 +1025,7 @@ function ApplicationForm() {
             Congratulations on your new furry friend! We're so excited for you
             both!
           </p>
-          <br />
+          <button onClick={handleDownloadContract}>Download Contract</button>
         </div>
       )}
     </main>

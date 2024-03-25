@@ -83,10 +83,16 @@
       margin-bottom: 10px;
     }
 
-    input[type="text"], select {
+    input[type="text"], textarea, select {
       height: 100px;
       margin: 5px 20px 10px 20px;
       width: calc(100% - 40px);
+      text-wrap: wrap;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    input[type="text"] {
+      height: 25px;
     }
 
     .radio-btn {
