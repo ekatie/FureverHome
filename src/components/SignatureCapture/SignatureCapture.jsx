@@ -8,7 +8,6 @@ const SignatureCapture = ({ onReady }) => {
   useEffect(() => {
     signaturePadRef.current = new SignaturePad(canvasRef.current);
     onReady(signaturePadRef.current);
-    console.log("SignaturePad initialized");
   }, []);
 
   return (
