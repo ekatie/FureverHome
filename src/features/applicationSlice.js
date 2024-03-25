@@ -120,7 +120,7 @@ export const uploadSignedContractAsync = createAsyncThunk(
     try {
       const formData = new FormData();
       formData.append("signed_contract", signedPdfBlob, `Signed_Dog_Adoption_Contract_${applicationId}.pdf`);
-      const response = await API.put(`/applications/${applicationId}/upload_signed_contract`, formData, {
+      const response = await API.put(`/applications/${applicationId}/signed_contract`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -128,6 +128,27 @@ export const uploadSignedContractAsync = createAsyncThunk(
       return response.data;
     } catch (error) {
       console.error("Upload Signed Contract Error:", error.response || error);
+      throw error;
+    }
+  }
+);
+
+export const downloadContractAsync = createAsyncThunk(
+  "application/downloadContract",
+  async ({ applicationId }) => {
+    try {
+      const response = await API.get(`/applications/${applicationId}/download_contract`, { responseType: 'blob' });
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `Signed_Dog_Adoption_Contract_${applicationId}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+      return response.data;
+    } catch (error) {
+      console.error("Download Contract Error:", error.response || error);
       throw error;
     }
   }
