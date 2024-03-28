@@ -920,7 +920,7 @@ function ApplicationForm() {
           <p>
             <span className="label-text">Application Status:</span>{" "}
             {applicationStatus}
-            <p>Please check back in a few days for an update.</p>
+            <p>Your application is being reviewed. Admin will be in touch with next steps soon!</p>
           </p>
           <img
             src="https://ekatie.github.io/FureverHome/src/assets/running_4.png"
