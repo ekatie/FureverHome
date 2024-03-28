@@ -21,15 +21,15 @@ const AdminApplicationDetails = () => {
   const applicationStatus = useSelector((state) => state.application.status);
 
   const statusOptions = [
-    "Submitted",
-    "Under Review",
+    // "Submitted",
+    // "Under Review",
     "Pending Interview Booking",
     "Pending Meet and Greet Booking",
     "Pending Adoption Date Booking",
     "Awaiting Payment",
-    "Awaiting Contract Signature",
+    // "Awaiting Contract Signature",
     "Adoption Complete",
-    "Approved",
+    // "Approved",
     "Rejected",
   ];
 
@@ -135,6 +135,9 @@ const AdminApplicationDetails = () => {
                   onChange={handleChange}
                   className="status-select"
                 >
+                  <option key={application.status} value={application.status}>
+                    {application.status}
+                  </option>
                   {statusOptions.map((status) => (
                     <option key={status} value={status}>
                       {status}
