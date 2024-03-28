@@ -2,7 +2,7 @@ import React from "react";
 import "../AdminDogList/AdminDogList.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import EditIcon from "@mui/icons-material/Edit";
+import FileOpenIcon from "@mui/icons-material/FileOpen";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router-dom";
 import { fetchAdminApplicationsAsync } from "../../features/applicationSlice";
@@ -28,7 +28,10 @@ const AdminApplicationList = () => {
   return (
     <section className="admin-list">
       <div className="page-header">
-        <ArrowBackIcon className="back-icon" onClick={() => navigate('/admin/dashboard')} />
+        <ArrowBackIcon
+          className="back-icon"
+          onClick={() => navigate("/admin/dashboard")}
+        />
         <h1 className="page-title">Admin Application List</h1>
       </div>
       <table className="admin-table">
@@ -59,7 +62,7 @@ const AdminApplicationList = () => {
                   className="edit-button"
                   onClick={() => navigate(`/admin/applications/${app.id}`)}
                 >
-                  <EditIcon />
+                  <FileOpenIcon />
                 </button>
               </td>
             </tr>
