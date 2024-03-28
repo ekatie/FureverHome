@@ -3,6 +3,8 @@
 
   h2 {
     margin: 0;
+    margin-left: 20px;
+    margin-top: 15px;
     padding: 0;
     font-size: 1.7em;
     text-align: center;
@@ -10,7 +12,8 @@
 
   p {
     margin-top: 20px;
-    margin-bottom: 0px;
+    margin-bottom: 15px;
+    margin-left: 20px;
     padding: 0;
     font-size: 1.1em;
   }
@@ -18,13 +21,13 @@
   ul {
     list-style: none;
     padding: 0;
-    margin: 15px;
+    margin: 0 15px;
   }
 
   .dog-match-item {
   display: flex;
   align-items: center;
-  margin-top: 20px;
+  margin-bottom: 20px;
   justify-content: space-between;
   border: 2px solid #7e7e7e;
   border-radius: 10px;
@@ -121,10 +124,9 @@
   .match-buttons {
     display: flex;
     justify-content: center;
-    margin-top: 5px;
+    margin-top: 0;
     gap: 40px;
-    
-  
+      
   .application-btn {
     margin: 0;
     height: 40px;
